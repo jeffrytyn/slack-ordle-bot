@@ -40,7 +40,6 @@ exports.handler = async({body, httpMethod, path}, context) => {
     headers: {"Content-type": "application/json"},
   }
   if (slack_event === 'app_mention') {
-    const channel_id = body_obj.event.channel;
     parse_app_mention(body_obj.event.text);
     // const db = admin.firestore();
     // const docRef = db.collection('users').doc(body.event.user);
@@ -51,7 +50,17 @@ exports.handler = async({body, httpMethod, path}, context) => {
     //   console.log('Document data:', doc.data());
     // }
   }else if(slack_event === "message.im"){
-
+    await fetch("https://slack.com/api/chat.postMessage", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        token: process.env.SLACK_APP_TOKEN,
+        channel: body_obj.event.channel,
+        text: "Hello World!"
+      })
+    })
   }
   return res;
 };
