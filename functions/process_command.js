@@ -5,6 +5,11 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+  // console.log(process.env.SLACK_APP_TOKEN);
+}
+
 // var firebaseConfig = JSON.parse(fs.readFileSync('slack-ordle-bot-firebase-adminsdk-xfcl9-9d0897e3da.json', 'utf8'));
 
 // // Create and deploy your first functions
@@ -21,10 +26,10 @@ admin.initializeApp({
 //   res.sendStatus(200);
 // });
 
-exports.handler = async(event, context) => {
-  const { name = "Anonymous" } = event.queryStringParameters;
+exports.handler = async({queryStringParameters, body, httpMethod, path}, context) => {
+  const { name = "Anonymous" } = queryStringParameters;
   return {
       statusCode: 200,
-      body: `Hello, ${name}`
+      body: body.challenge
   };
 };
