@@ -26,7 +26,7 @@ export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase() || "";
-  fetch(body_obj.response_url, {
+  await fetch(body_obj.response_url, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
