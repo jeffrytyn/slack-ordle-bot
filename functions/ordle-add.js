@@ -58,7 +58,8 @@ export async function handler({body}, context){
     game = "countryle"
   }
   console.log(`${game} ${user_id}`);
-  await setDoc(doc(db, game, "test"), {
+  console.log(typeof user_id);
+  await setDoc(doc(db, game, user_id), {
     score: score
   }).then(() => {
     console.log("Document successfully written!");
