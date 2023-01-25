@@ -22,7 +22,7 @@ const parse_app_mention = (text) => {
 }
 
 function test(){
-  setDoc(doc(db, "wordle", "id"), {
+  setDoc(doc(db, "wordle", "U04HTKDVCL8"), {
     score: 50
   })
   return;
@@ -58,7 +58,7 @@ export async function handler({body}, context){
     game = "countryle"
   }
   console.log(`${game} ${user_id}`);
-  setDoc(doc(db, game, user_id), {
+  await setDoc(doc(db, game, "test"), {
     score: score
   }).then(() => {
     console.log("Document successfully written!");
