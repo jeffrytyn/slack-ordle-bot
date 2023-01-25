@@ -26,8 +26,7 @@ export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase() || "";
-  const response_url = body_obj?.response_url || "";
-  if(!user_id || !text || !response_url){
+  if(!user_id || !text){
     return {statusCode: 400, body: "Bad Request"}
   }
   const [game_id, score] = parse_app_mention(text);
@@ -62,7 +61,7 @@ export async function handler({body}, context){
       statusCode: 200,
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
-        response_type: "ephemeral",
+        response_type: "in_channel",
         text: `Your score of ${score} for ${game} has been recorded.`
       })}
     }).catch((error) => {
@@ -71,7 +70,7 @@ export async function handler({body}, context){
         statusCode: 200,
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          response_type: "ephemeral",
+          response_type: "in_channel",
           text: `Your score of ${score} for ${game} failed to be recorded.`
         })}
     });
