@@ -1,7 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import db from "../firebase.js"
+import {setDoc, doc } from "firebase/firestore";
 import fetch from 'node-fetch';
-import * as dotenv from 'dotenv';
 import qs from "qs";
 import {   
   get_wordle_score,
@@ -9,23 +8,6 @@ import {
   get_quordle_score,
   get_countryle_score } from "../game_parsers.js";
 
-
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
-
-const firebaseConfig = {
-  apiKey: process.env.FSTORE_API_KEY,
-  authDomain: process.env.FSTORE_AUTH_DOMAIN,
-  projectId: process.env.FSTORE_PROJECT_ID,
-  storageBucket: process.env.FSTORE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FSTORE_MESSAGING_SENDER_ID,
-  appId: process.env.FSTORE_APP_ID,
-  measurementId: process.env.FSTORE_MEASUREMENT_ID
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 const parse_app_mention = (text) => {
   const wordle_score = get_wordle_score(text);
