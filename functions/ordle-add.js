@@ -57,7 +57,7 @@ export async function handler({body}, context){
   }else if(game_id === 3){
     game = "countryle"
   }
-  console.log(`${game_ref.id} ${game}`);
+  // console.log(`${game_ref.id} ${game}`);
   setDoc(doc(db, game, user_id), {
     score: score
   }).then(() => {
