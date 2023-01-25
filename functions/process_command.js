@@ -48,7 +48,6 @@ export async function handler({body, httpMethod, path}, context){
       method: "POST",
       headers: {
         "Content-type": "application/json",
-        "Authorization": "Bearer " + process.env.SLACK_APP_TOKEN
       },
       body: JSON.stringify({
         channel: body_obj.event.channel,
