@@ -27,9 +27,7 @@ exports.handler = async({body, httpMethod, path}, context) => {
   }
   return {
       statusCode: 200,
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        challenge: body.challenge,
-      })
+      headers: {"Content-type": "text/plain"},
+      body: body.challenge
   };
 };
