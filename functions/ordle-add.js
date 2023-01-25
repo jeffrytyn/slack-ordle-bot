@@ -36,7 +36,7 @@ const parse_app_mention = (text) => {
   if(quordle_score >= 0){ return [2, quordle_score]; }
   const countryle_score = get_countryle_score(text);
   if(countryle_score >= 0){ return [3, countryle_score]; }
-  return -1;
+  return [-1, -1];
 }
 
 
