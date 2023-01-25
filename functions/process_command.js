@@ -14,7 +14,7 @@ const parse_app_mention = (text) => {
 }
 
 exports.handler = async({body, httpMethod, path}, context) => {
-  if (body.event.type === 'app_mention') {
+  if (body?.event?.type === 'app_mention') {
     parse_app_mention(body.event.text);
     // const db = admin.firestore();
     // const docRef = db.collection('users').doc(body.event.user);
@@ -27,7 +27,9 @@ exports.handler = async({body, httpMethod, path}, context) => {
   }
   return {
       statusCode: 200,
-      headers: {"Content-type": "text/plain"},
-      body: body.challenge
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({
+        challenge: body.challenge,
+      })
   };
 };
