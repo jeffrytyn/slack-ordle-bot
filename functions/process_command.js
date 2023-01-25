@@ -10,13 +10,25 @@ if (process.env.NODE_ENV !== 'production') {
   // console.log(process.env.SLACK_APP_TOKEN);
 }
 
-exports.handler = async({queryStringParameters, body, httpMethod, path}, context) => {
-  const { name = "Anonymous" } = queryStringParameters;
+const parse_app_mention = (text) => {
+}
+
+exports.handler = async({body, httpMethod, path}, context) => {
+  if (body.event.type === 'app_mention') {
+    parse_app_mention(body.event.text);
+    // const db = admin.firestore();
+    // const docRef = db.collection('users').doc(body.event.user);
+    // const doc = await docRef.get();
+    // if (!doc.exists) {
+    //   console.log('No such document!');
+    // } else {
+    //   console.log('Document data:', doc.data());
+    // }
+  }
   return {
       statusCode: 200,
       body: JSON.stringify({
         challenge: body.challenge,
-        res: "Hello, " + name + "!"
       })
   };
 };
