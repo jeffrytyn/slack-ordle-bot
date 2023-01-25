@@ -8,7 +8,7 @@ export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase() || "";
-  if(text !== "wordle" || text !== "worldle" || text !== "quordle" || text !== "countryle"){
+  if(text !== "wordle" && text !== "worldle" && text !== "quordle" && text !== "countryle"){
     return {
       statusCode: 200,
       headers: {"Content-Type": "application/json"},
