@@ -43,13 +43,14 @@ export async function handler({body, httpMethod, path}, context){
     slack_event === 'message.groups' || 
     slack_event === 'message.im') { 
       console.log(body_obj.event.channel);
+      console.log(process.env.SLACK_APP_TOKEN)
     const res = await fetch("https://slack.com/api/chat.postMessage", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
+        "Authorization": "Bearer " + process.env.SLACK_APP_TOKEN
       },
       body: JSON.stringify({
-        token: process.env.SLACK_APP_TOKEN,
         channel: body_obj.event.channel,
         text: "Hello World!"
       })
