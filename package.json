@@ -4,7 +4,7 @@
   "description": "Slack bot for tracking scores of -ordle games",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha game_parsers.test.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,11 @@
     "dotenv": "^16.0.3",
     "firebase": "^9.16.0",
     "firebase-admin": "^11.5.0",
-    "node-fetch": "^3.3.0"
+    "mocha": "^10.2.0",
+    "node-fetch": "^3.3.0",
+    "qs": "^6.11.0"
+  },
+  "devDependencies": {
+    "jest": "^29.4.0"
   }
 }
