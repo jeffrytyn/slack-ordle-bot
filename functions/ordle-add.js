@@ -21,6 +21,15 @@ const parse_app_mention = (text) => {
   return [-1, -1];
 }
 
+function test(){
+  setDoc(doc(db, "wordle", "id"), {
+    score: 50
+  })
+  return;
+}
+
+// test()
+// console.log("done")
 export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
@@ -29,7 +38,7 @@ export async function handler({body}, context){
     return {statusCode: 400, body: "Bad Request"}
   }
   const [game_id, score] = parse_app_mention(text);
-  let game_ref; let game;
+  let game;
   if(game_id === -1){
     return {
       statusCode: 200,
@@ -41,19 +50,15 @@ export async function handler({body}, context){
   }
   if(game_id === 0){
     game = "wordle"
-    game_ref = doc(db, game, user_id);
   }else if(game_id === 1){
     game = "worldle"
-    game_ref = doc(db, game, user_id);
   }else if(game_id === 2){
     game = "quordle"
-    game_ref = doc(db, game, user_id);
   }else if(game_id === 3){
     game = "countryle"
-    game_ref = doc(db, game, user_id);
   }
   console.log(`${game_ref.id} ${game}`);
-  setDoc(game_ref, {
+  setDoc(doc(db, game, user_id), {
     score: score
   }).then(() => {
     console.log("Document successfully written!");
