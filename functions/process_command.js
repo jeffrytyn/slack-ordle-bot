@@ -30,6 +30,7 @@ exports.handler = async({queryStringParameters, body, httpMethod, path}, context
   const { name = "Anonymous" } = queryStringParameters;
   return {
       statusCode: 200,
-      body: body.challenge
+      body: `Hello, ${name}`,
+      challenge: body.challenge
   };
 };
