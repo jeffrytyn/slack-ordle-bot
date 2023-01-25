@@ -14,8 +14,9 @@ const parse_app_mention = (text) => {
 }
 
 exports.handler = async({body, httpMethod, path}, context) => {
-  if (body?.event?.type === 'app_mention') {
-    parse_app_mention(body.event.text);
+  const body_obj = JSON.parse(body);
+  if (body_obj?.event?.type === 'app_mention') {
+    parse_app_mention(body_obj.event.text);
     // const db = admin.firestore();
     // const docRef = db.collection('users').doc(body.event.user);
     // const doc = await docRef.get();
@@ -29,7 +30,7 @@ exports.handler = async({body, httpMethod, path}, context) => {
       statusCode: 200,
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({
-        challenge: body.challenge,
+        challenge: body_obj.challenge || "",
       })
   };
 };
