@@ -1,0 +1,23 @@
+{
+  "name": "slack-ordle-bot",
+  "version": "1.0.0",
+  "description": "Slack bot for tracking scores of -ordle games",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffrytyn/slack-ordle-bot.git"
+  },
+  "author": "Jeffrey Tian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeffrytyn/slack-ordle-bot/issues"
+  },
+  "homepage": "https://github.com/jeffrytyn/slack-ordle-bot#readme",
+  "dependencies": {
+    "firebase": "^9.16.0",
+    "firebase-admin": "^11.5.0"
+  }
+}
