@@ -48,9 +48,11 @@ export async function handler({body}, context){
     game = "countryle"
   }
 
+  const user_ref = doc(db, game, user_id);
+
   await setDoc(doc(db, game, user_id), {
     score: increment(score)
-  }).then(() => {
+  }, {merge: true}).then(() => {
     console.log("Document successfully written!");
   }).catch((error) => {
     console.error("Error writing document: ", error);
