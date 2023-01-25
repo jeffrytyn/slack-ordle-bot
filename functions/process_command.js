@@ -36,22 +36,13 @@ exports.handler = async({body, httpMethod, path}, context) => {
       })
     };
   }
-  const res = {
-    statusCode: 200,
-    headers: {"Content-type": "application/json"},
-  }
-  if (slack_event === 'app_mention') {
-    parse_app_mention(body_obj.event.text);
-    // const db = admin.firestore();
-    // const docRef = db.collection('users').doc(body.event.user);
-    // const doc = await docRef.get();
-    // if (!doc.exists) {
-    //   console.log('No such document!');
-    // } else {
-    //   console.log('Document data:', doc.data());
-    // }
-  }else if(slack_event === "message.im"){
-    await fetch("https://slack.com/api/chat.postMessage", {
+  if (slack_event === 'message' || 
+    slack_event === 'app_mention' || 
+    slack_event === 'message.channels' || 
+    slack_event === 'message.groups' || 
+    slack_event === 'message.im') { 
+      console.log(body_obj.event.channel);
+    const res = await fetch("https://slack.com/api/chat.postMessage", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -62,6 +53,13 @@ exports.handler = async({body, httpMethod, path}, context) => {
         text: "Hello World!"
       })
     })
+    if(!res.ok){
+      console.log("Failed response: " + res.status);
+      return {
+        statusCode: res.status,
+        headers: {"Content-type": "application/json"},
+      };
+    }
   }
-  return res;
+  return {statusCode: 200};
 };
