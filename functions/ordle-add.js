@@ -48,8 +48,6 @@ export async function handler({body}, context){
     game = "countryle"
   }
 
-  const user_ref = doc(db, game, user_id);
-
   await setDoc(doc(db, game, user_id), {
     score: increment(score)
   }, {merge: true}).then(() => {
