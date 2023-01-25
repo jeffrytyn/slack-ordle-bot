@@ -30,14 +30,6 @@ export async function handler({body}, context){
   if(!user_id || !text || !response_url){
     return {statusCode: 400, body: "Bad Request"}
   }
-  await fetch(body_obj.response_url, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        response_type: "in_channel",
-        text: body_obj.command + " " + body_obj.text
-      })
-    });
   const [game_id, score] = parse_app_mention(text);
   let game_ref; let game;
   if(game_id === -1){
@@ -64,12 +56,23 @@ export async function handler({body}, context){
   }
   setDoc(game_ref, {
     score: score
-  });
-  return {
-    statusCode: 200,
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      response_type: "in_channel",
-      text: `Your score of ${score} for ${game} has been recorded.`
-    })}
+  }).then(() => {
+    console.log("Document successfully written!");
+    return {
+      statusCode: 200,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        response_type: "ephemeral",
+        text: `Your score of ${score} for ${game} has been recorded.`
+      })}
+    }).catch((error) => {
+      console.error("Error writing document: ", error);
+      return {
+        statusCode: 200,
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          response_type: "ephemeral",
+          text: `Your score of ${score} for ${game} failed to be recorded.`
+        })}
+    });
 };
