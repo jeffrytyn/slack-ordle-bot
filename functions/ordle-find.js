@@ -9,7 +9,7 @@ export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase() || "";
-  fetch(body_obj.response_url, {
+  await fetch(body_obj.response_url, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -48,7 +48,7 @@ export async function handler({body}, context){
     statusCode: 200,
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
-      response_type: "in_channel",
+      response_type: "ephemeral",
       text: `Your score of ${score} for ${game} has been recorded.`
     })}
 };
