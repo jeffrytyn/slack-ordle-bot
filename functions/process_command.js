@@ -14,9 +14,9 @@ exports.handler = async({queryStringParameters, body, httpMethod, path}, context
   const { name = "Anonymous" } = queryStringParameters;
   return {
       statusCode: 200,
-      body: {
+      body: JSON.stringify({
         challenge: body.challenge,
         res: "Hello, " + name + "!"
-      }
+      })
   };
 };
