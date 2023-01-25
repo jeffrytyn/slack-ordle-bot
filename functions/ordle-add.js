@@ -1,5 +1,5 @@
 import db from "../firebase.js"
-import {setDoc, doc, increment } from "firebase/firestore";
+import {setDoc, doc, increment, collection, addDoc, getDoc } from "firebase/firestore";
 import qs from "qs";
 import {   
   get_wordle_score,
@@ -9,14 +9,14 @@ import {
 
 
 const parse_app_mention = (text) => {
-  const wordle_score = get_wordle_score(text);
-  if(wordle_score >= 0){ return [0, wordle_score]; }
-  const worldle_score = get_worldle_score(text);
-  if(worldle_score >= 0){ return [1, worldle_score]; }
-  const quordle_score = get_quordle_score(text);
-  if(quordle_score >= 0){ return [2, quordle_score]; }
-  const countryle_score = get_countryle_score(text);
-  if(countryle_score >= 0){ return [3, countryle_score]; }
+  let [day, score] = get_wordle_score(text);
+  if(score >= 0){ return [0, day, score]; }
+  [day, score] = get_worldle_score(text);
+  if(score >= 0){ return [1, day, score]; }
+  [day, score] = get_quordle_score(text);
+  if(score >= 0){ return [2, day, score]; }
+  [day, score] = get_countryle_score(text);
+  if(score >= 0){ return [3, day, score]; }
   return [-1, -1];
 }
 
@@ -27,7 +27,7 @@ export async function handler({body}, context){
   if(!user_id || !text){
     return {statusCode: 400, body: "Bad Request"}
   }
-  const [game_id, score] = parse_app_mention(text);
+  const [game_id, day, score] = parse_app_mention(text);
   let game;
   if(game_id === -1){
     return {
@@ -47,20 +47,36 @@ export async function handler({body}, context){
   }else if(game_id === 3){
     game = "countryle"
   }
-
-  await setDoc(doc(db, game, user_id), {
-    score: increment(score)
-  }, {merge: true}).then(() => {
-    console.log("Document successfully written!");
-  }).catch((error) => {
-    console.error("Error writing document: ", error);
-  });
-  return {
-    statusCode: 200,
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      response_type: "in_channel",
-      text: `Your score of ${score} for ${game} has been recorded.`
-    })
-  }
+  const date_ref = doc(db, game, user_id, "scores", day);
+  await getDoc(doc).then((res) => {
+    if(res.exists()){
+      return {
+        statusCode: 200,
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          response_type: "ephemeral",
+          text: `Day ${day} has already been submitted.`
+        })
+      }
+    }else{
+      const updates = [
+        setDoc(doc(db, game, user_id), {
+          total: increment(score)
+        }, {merge: true}),
+        addDoc(date_ref, {
+          score: score
+        })
+      ]
+      return Promise.all(updates).then(() => {
+        return {
+          statusCode: 200,
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            response_type: "in_channel",
+            text: `${game.charAt(0) + game.slice(1)} ${day} score: ${score}`
+          })
+        }
+      })
+    }
+  })
 };
