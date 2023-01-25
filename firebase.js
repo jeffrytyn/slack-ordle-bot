@@ -16,9 +16,7 @@ const firebaseConfig = {
   measurementId: process.env.FSTORE_MEASUREMENT_ID
 };
 
-console.log(JSON.stringify(firebaseConfig));
+// console.log(JSON.stringify(firebaseConfig));
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-export default db;
+export default getFirestore(app);
