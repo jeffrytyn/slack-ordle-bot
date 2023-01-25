@@ -26,6 +26,7 @@ const parse_app_mention = (text) => {
 exports.handler = async({body, httpMethod, path}, context) => {
   const body_obj = JSON.parse(body) || {};
   const slack_event = body_obj?.event?.type || "";
+  console.log(slack_event);
   if(slack_event === ''){
     return {
       statusCode: 400,
