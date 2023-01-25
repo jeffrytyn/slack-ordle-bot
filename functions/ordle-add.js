@@ -53,7 +53,7 @@ export async function handler({body}, context){
     game = "countryle"
     game_ref = doc(db, game, user_id);
   }
-  console.log("before setDoc");
+  console.log(`${game_ref.id} ${game}`);
   setDoc(game_ref, {
     score: score
   }).then(() => {
