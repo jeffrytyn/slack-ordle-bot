@@ -26,6 +26,10 @@ export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase() || "";
+  const response_url = body_obj?.response_url || "";
+  if(!user_id || !text || !response_url){
+    return {statusCode: 400, body: "Bad Request"}
+  }
   await fetch(body_obj.response_url, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
