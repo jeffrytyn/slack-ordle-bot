@@ -21,15 +21,6 @@ const parse_app_mention = (text) => {
   return [-1, -1];
 }
 
-function test(){
-  setDoc(doc(db, "wordle", "U04HTKDVCL8"), {
-    score: 50
-  })
-  return;
-}
-
-// test()
-// console.log("done")
 export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
@@ -57,9 +48,8 @@ export async function handler({body}, context){
   }else if(game_id === 3){
     game = "countryle"
   }
-  console.log(`${game} ${user_id}`);
-  console.log(typeof user_id);
-  setDoc(doc(db, game, user_id), {
+
+  await setDoc(doc(db, game, user_id), {
     score: score
   }).then(() => {
     console.log("Document successfully written!");
