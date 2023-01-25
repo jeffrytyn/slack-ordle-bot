@@ -1,12 +1,14 @@
-var admin = require("firebase-admin");
+import { initializeApp } from "firebase/app";
+import fetch from 'node-fetch';
+import * as dotenv from 'dotenv';
+
 
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+  dotenv.config();
   // console.log(process.env.SLACK_APP_TOKEN);
 }
 
-admin.initializeApp({
-  credential: admin.credential.cert({
+const app = initializeApp({
     type: process.env.FSTORE_TYPE,
     project_id: process.env.FSTORE_PROJECT_ID,
     private_key_id: process.env.FSTORE_PRIVATE_KEY_ID,
@@ -17,13 +19,12 @@ admin.initializeApp({
     token_uri: process.env.FSTORE_TOKEN_URI,
     auth_provider_x509_cert_url: process.env.FSTORE_AUTH_PROVIDER_X509_CERT_URL,
     client_x509_cert_url: process.env.FSTORE_CLIENT_X509_CERT_URL 
-  })
-});
+  });
 
 const parse_app_mention = (text) => {
 }
 
-exports.handler = async({body, httpMethod, path}, context) => {
+export async function handler({body, httpMethod, path}, context){
   const body_obj = JSON.parse(body) || {};
   const slack_event = body_obj?.event?.type || "";
   console.log(slack_event);

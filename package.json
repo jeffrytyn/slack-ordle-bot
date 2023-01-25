@@ -10,6 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/jeffrytyn/slack-ordle-bot.git"
   },
+  "type": "module",
   "author": "Jeffrey Tian",
   "license": "ISC",
   "bugs": {
@@ -19,6 +20,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "firebase": "^9.16.0",
-    "firebase-admin": "^11.5.0"
+    "firebase-admin": "^11.5.0",
+    "node-fetch": "^3.3.0"
   }
 }
