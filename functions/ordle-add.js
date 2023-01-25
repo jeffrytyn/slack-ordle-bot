@@ -21,7 +21,6 @@ const parse_app_mention = (text) => {
   return [-1, -1];
 }
 
-
 export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
@@ -58,21 +57,15 @@ export async function handler({body}, context){
     score: score
   }).then(() => {
     console.log("Document successfully written!");
-    return {
-      statusCode: 200,
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        response_type: "in_channel",
-        text: `Your score of ${score} for ${game} has been recorded.`
-      })}
-    }).catch((error) => {
-      console.error("Error writing document: ", error);
-      return {
-        statusCode: 200,
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          response_type: "in_channel",
-          text: `Your score of ${score} for ${game} failed to be recorded.`
-        })}
-    });
+  }).catch((error) => {
+    console.error("Error writing document: ", error);
+  });
+  return {
+    statusCode: 200,
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      response_type: "in_channel",
+      text: `Your score of ${score} for ${game} has been recorded.`
+    })
+  }
 };
