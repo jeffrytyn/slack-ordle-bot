@@ -1,6 +1,5 @@
 import db from "../firebase.js"
-import {setDoc, doc } from "firebase/firestore";
-import fetch from 'node-fetch';
+import {setDoc, doc, increment } from "firebase/firestore";
 import qs from "qs";
 import {   
   get_wordle_score,
@@ -50,7 +49,7 @@ export async function handler({body}, context){
   }
 
   await setDoc(doc(db, game, user_id), {
-    score: score
+    score: increment(score)
   }).then(() => {
     console.log("Document successfully written!");
   }).catch((error) => {
