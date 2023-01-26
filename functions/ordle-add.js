@@ -18,10 +18,11 @@ const parse_app_mention = (text) => {
   if(score >= 0){ return [2, day, score]; }
   [day, score] = get_countryle_score(text);
   if(score >= 0){ return [3, day, score]; }
-  return [-1, -1];
+  return [-1, , -1, -1];
 }
 
 export async function handler({body, headers}, context){
+  return {statusCode: 200, body: JSON.stringify({"challenge": body.challenge}})
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
     console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
