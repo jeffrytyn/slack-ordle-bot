@@ -1,11 +1,12 @@
 import {db, auth} from "../firebase.js"
 import { collection, doc, getDocFromServer, getCountFromServer } from "firebase/firestore";
+import { signInAnonymously } from "firebase/auth";
 import slack_verify from "../slack_verify.js";
 import qs from "qs";
 
 
 
-export async function handler({body}, context){
+export async function handler({body, headers}, context){
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
     console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
