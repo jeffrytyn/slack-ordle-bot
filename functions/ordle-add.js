@@ -11,8 +11,6 @@ import {
   get_countryle_score } from "../game_parsers.js";
 
 const parse_text = (text) => {
-  console.log(text);
-  console.log(text.startsWith("wordle"))
   if(text.startsWith("wordle")){
     const [day, score] = get_wordle_score(text);
     return day !== "" ? ["wordle", day, score] : ["", , "", -1];
@@ -58,7 +56,7 @@ async function event_handler(body, headers){
   }
   const body_obj = JSON.parse(body) || {};
   console.log(JSON.stringify(body_obj.event))
-  if(body_obj.event?.type !== "message" || body_obj.event?.subtype){
+  if(body_obj.event?.type !== "message" || body_obj.event?.subtype || body_obj.event?.bot_id){
     return {statusCode: 200}
   }
   if(!auth.currentUser){
@@ -73,9 +71,7 @@ async function event_handler(body, headers){
   const ts = body_obj.event.ts;
   const channel = body_obj.event.channel;
   const [game, day, score] = parse_text(text);
-  console.log(`${game} ${day} ${score}`)
   const added = await add_score(game, day, score, user_id);
-  console.log(`${added}`)
   if(added == 1){
     await fetch("https://slack.com/api/chat.postEphemeral", {
       method: "POST",
