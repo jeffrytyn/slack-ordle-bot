@@ -23,7 +23,7 @@ const parse_text = (text) => {
     const [day, score] = get_countryle_score(text);
     return day !== "" ? ["countryle", day, score] : ["", , "", -1];
   }
-  if(text.contains("https://worldle.teuteuf.fr")){
+  if(text.includes("https://worldle.teuteuf.fr")){
     const [day, score] = get_worldle_score(text);
     return day !== "" ? ["worldle", day, score] : ["", , "", -1];
   }
@@ -56,7 +56,7 @@ async function event_handler(body, headers){
   }
   const body_obj = JSON.parse(body) || {};
   console.log(JSON.stringify(body_obj.event))
-  if(body_obj.event?.type !== "message" || body_obj.event?.subtype || body_obj.event?.bot_id){
+  if(body_obj.event?.type !== "message" || body_obj.event?.subtype || body_obj.event?.bot_id || !body_obj.event?.ts){
     return {statusCode: 200}
   }
   if(!auth.currentUser){
