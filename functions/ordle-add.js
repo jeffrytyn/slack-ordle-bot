@@ -1,4 +1,5 @@
 import {db, auth} from "../firebase.js"
+import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import qs from "qs";
 import slack_verify from "../slack_verify.js";
