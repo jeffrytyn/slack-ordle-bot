@@ -2,7 +2,6 @@ import {db, auth} from "../firebase.js"
 import { signInAnonymously } from "firebase/auth";
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import fetch from 'node-fetch'
-import qs from "qs";
 import slack_verify from "../slack_verify.js";
 import {   
   get_wordle_score,
@@ -55,7 +54,6 @@ async function event_handler(body, headers){
     return {statusCode: 401, body: "Unauthorized"}
   }
   const body_obj = JSON.parse(body) || {};
-  console.log(JSON.stringify(body_obj.event))
   if(body_obj.event?.type !== "message" || body_obj.event?.subtype || body_obj.event?.bot_id || !body_obj.event?.ts){
     return {statusCode: 200}
   }
