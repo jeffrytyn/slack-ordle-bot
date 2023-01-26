@@ -21,19 +21,16 @@ const parse_app_mention = (text) => {
   return [-1, -1];
 }
 
-// async function test(){
-//     const updates = [
-//       setDoc(doc(db, "test", "test"), {
-//         total: increment(5)
-//       }, {merge: true}),
-//       setDoc(doc(db, "test", "test1"), {
-//         score: 6
-//       })
-//     ]
-//     return;
-// }
+async function test(){
+    const updates = [
+      setDoc(doc(db, "test", "test"), {
+        total: increment(5)
+      }, {merge: true})
+    ]
+    return;
+}
 
-// test()
+test()
 
 export async function handler({body, headers}, context){
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){

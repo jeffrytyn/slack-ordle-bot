@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth, signInAnonymously } from "firebase/auth";
 import * as dotenv from 'dotenv'
 
 if (process.env.NODE_ENV !== 'production') {
@@ -19,6 +20,13 @@ const firebaseConfig = {
 // console.log(JSON.stringify(firebaseConfig))
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const auth = getAuth(app);
+await signInAnonymously(auth)
+  .then(() => {
+    console.log("Firebase signed in anonymously");
+  })
+  .catch((error) => {
+    console.log(`${error.message}`);
+  });
 
-export default db;
+export default getFirestore(app);
