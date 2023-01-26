@@ -30,7 +30,7 @@ export async function handler({body, headers}, context){
   //   console.log("Firebase anonymous sign in");
   //   await signInAnonymously(auth);
   // }
-  const body_obj = qs.parse(body) || {};
+  const body_obj = JSON.parse(body) || qs.parse(body) || {};
   console.log(JSON.stringify(body_obj))
   return {
     statusCode: 200,
