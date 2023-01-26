@@ -31,8 +31,9 @@ export async function handler({body, headers}, context){
   const q = query(collection(db, game), orderBy("total", "desc"), limit(parseInt(count)));
   const snap = await getDocs(q);
   const score = [];
-  for(const doc of snap.docs){
-    score.push(`<@${doc.id}>: ${doc.data().total}`);
+  for(let i = 0; i < snap.docs.length; i++){
+    const doc = snap.docs[i];
+    score.push(`${i == 0 ? ":tada: " : ""}<@${doc.id}>: ${doc.data().total}${i == 0 ? " :tada:" : ""}`);
   }
   return {
     statusCode: 200,
