@@ -99,7 +99,7 @@ export async function handler({body}, context){
       setDoc(doc(db, game, user_id), {
         total: increment(score)
       }, {merge: true}),
-      addDoc(doc(db, game, user_id, "scores", day), {
+      setDoc(date_ref, {
         score: score
       })
     ]
