@@ -37,7 +37,7 @@ const parse_app_mention = (text) => {
 
 export async function handler({body, headers}, context){
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
-    console.log("false");
+    console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
   }
   const body_obj = qs.parse(body) || {};

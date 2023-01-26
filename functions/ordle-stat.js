@@ -5,6 +5,10 @@ import qs from "qs";
 
 
 export async function handler({body}, context){
+  if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
+    console.log("not slack request");
+    return {statusCode: 401, body: "Unauthorized"}
+  }
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const game = body_obj.text?.toLowerCase().trim() || "";
