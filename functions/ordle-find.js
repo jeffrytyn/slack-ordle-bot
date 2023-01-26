@@ -14,7 +14,7 @@ export async function handler({body}, context){
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         response_type: "ephemeral",
-        text: "Sorry, that game is not supported. Please try a game that is."
+        text: "Sorry, that game is not supported. See OrdleBot info for valid games."
       })}
   }
   const snap = await getDocFromServer(doc(db, game, user_id))
