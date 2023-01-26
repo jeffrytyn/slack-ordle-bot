@@ -8,7 +8,7 @@ const get_wordle_score = (lowercase_txt) => {
   if(wordle_ind === -1){ return [-1, -1]; }
   const sp1 = lowercase_txt.indexOf(" ", wordle_ind);
   const sp2 = lowercase_txt.indexOf(" ", sp1+1);
-  const day = parseInt(lowercase_txt.substring(sp1+1, sp2));
+  const day = lowercase_txt.substring(sp1+1, sp2);
   const score_text = lowercase_txt.substring(sp2+1, sp2+2);
   return [day, score_text === 'x' ? 0 : MAX_WORDLE_SCORE - parseInt(score_text)];
 }
@@ -18,7 +18,7 @@ const get_quordle_score = (lowercase_txt) => {
   if(quordle_ind === -1){ return [-1, -1]; }
   const sp1 = lowercase_txt.indexOf(" ", quordle_ind);
   const col = lowercase_txt.indexOf(":", sp1+1);
-  const day = parseInt(lowercase_txt.substring(sp1+1, col));
+  const day = lowercase_txt.substring(sp1+1, col);
   const score_emojis = lowercase_txt.substring(col, lowercase_txt.indexOf("quordle.com")).split(":")
   let total_score = 0;
   for(let emoji of score_emojis){
@@ -42,7 +42,7 @@ const get_worldle_score = (lowercase_txt) => {
   if(worldle_ind === -1){ return [-1, -1]; }
   const sp1 = lowercase_txt.indexOf(" ", worldle_ind);
   const sp2 = lowercase_txt.indexOf(" ", sp1+1);
-  const day = parseInt(lowercase_txt.substring(sp1+2, sp2));
+  const day = lowercase_txt.substring(sp1+2, sp2);
   const score_text = lowercase_txt.substring(sp2+1, sp2+2);
   return [day, score_text === 'x' ? 0 : MAX_WORLDLE_SCORE - parseInt(score_text)];
 }
@@ -52,7 +52,7 @@ const get_countryle_score = (lowercase_txt) => {
   if(countryle_ind === -1){ return [-1, -1]; }
   const sp1 = lowercase_txt.indexOf(" ", countryle_ind);
   const nl = lowercase_txt.indexOf("\n", sp1+1);
-  const day = parseInt(lowercase_txt.substring(sp1+1, nl));
+  const day = lowercase_txt.substring(sp1+1, nl);
   const score_ind = lowercase_txt.indexOf(" tries");
   const score_text = lowercase_txt.substring(score_ind-1, score_ind);
   return [day, score_text === 'x' ? 0 : MAX_COUNTRYLE_SCORE - parseInt(score_text)];

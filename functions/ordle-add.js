@@ -20,6 +20,42 @@ const parse_app_mention = (text) => {
   return [-1, -1];
 }
 
+// async function test(){
+//   const date_ref = doc(db, game, user_id, "scores", day);
+//   console.log("ref");
+//   const date_doc = await getDoc(date_ref);
+//   console.log("exists " + date_doc.exists())
+//   if(date_doc.exists()){
+//     return {
+//       statusCode: 200,
+//       headers: {"Content-Type": "application/json"},
+//       body: JSON.stringify({
+//         response_type: "ephemeral",
+//         text: `Day ${day} has already been submitted.`
+//       })
+//     }
+//   }else{
+//     console.log("not exists " + day);
+//     const updates = [
+//       setDoc(doc(db, game, user_id), {
+//         total: increment(score)
+//       }, {merge: true}),
+//       addDoc(date_ref, {
+//         score: score
+//       })
+//     ]
+//     await Promise.all(updates);
+//     return {
+//       statusCode: 200,
+//       headers: {"Content-Type": "application/json"},
+//       body: JSON.stringify({
+//         response_type: "in_channel",
+//         text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
+//       })
+//     }
+//   }
+// }
+
 export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
