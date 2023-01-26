@@ -65,8 +65,9 @@ async function event_handler(body, headers){
   const channel = body_obj.event.channel;
   const [game, day, score] = parse_text(text);
   const added = await add_score(game, day, score);
+  console.log(`${game} ${day} ${score} ${added}`)
   if(added == 1){
-    fetch("https://slack.com/api/chat.postEphemeral", {
+    await fetch("https://slack.com/api/chat.postEphemeral", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -79,7 +80,7 @@ async function event_handler(body, headers){
       })
     })
   }else if(added == 2){
-    fetch("https://slack.com/api/chat.postMessage", {
+    await fetch("https://slack.com/api/chat.postMessage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
