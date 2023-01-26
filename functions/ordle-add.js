@@ -1,4 +1,4 @@
-import db from "../firebase.js"
+import db from "../firebase.mjs"
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import qs from "qs";
 import slack_verify from "../slack_verify.js";

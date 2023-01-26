@@ -21,12 +21,12 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-// await signInAnonymously(auth)
-//   .then(() => {
-//     console.log("Firebase signed in anonymously");
-//   })
-//   .catch((error) => {
-//     console.log(`${error.message}`);
-//   });
+await signInAnonymously(auth)
+  .then(() => {
+    console.log("Firebase signed in anonymously");
+  })
+  .catch((error) => {
+    console.log(`${error.message}`);
+  });
 
 export default getFirestore(app);

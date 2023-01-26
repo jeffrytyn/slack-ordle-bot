@@ -1,4 +1,4 @@
-import db from "../firebase.js"
+import db from "../firebase.mjs"
 import { collection, orderBy, query, limit, getDocs} from "firebase/firestore";
 import qs from "qs";
 
