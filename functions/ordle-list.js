@@ -1,5 +1,5 @@
 import db from "../firebase.js"
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, collection, query} from "firebase/firestore";
 import qs from "qs";
 
 

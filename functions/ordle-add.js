@@ -59,6 +59,7 @@ export async function handler({body}, context){
       })
     }
   }else{
+    console.log("not exists " + day);
     const updates = [
       setDoc(doc(db, game, user_id), {
         total: increment(score)
