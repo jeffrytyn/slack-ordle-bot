@@ -10,7 +10,7 @@ const get_wordle_score = (lowercase_txt) => {
   const sp2 = lowercase_txt.indexOf(" ", sp1+1);
   const day = lowercase_txt.substring(sp1+1, sp2);
   const score_text = lowercase_txt.substring(sp2+1, sp2+2);
-  console.log(day)
+  console.log(score_text)
   return [day || "", score_text === 'x' ? 0 : MAX_WORDLE_SCORE - parseInt(score_text)];
 }
 
