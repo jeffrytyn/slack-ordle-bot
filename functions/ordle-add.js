@@ -1,6 +1,7 @@
 import db from "../firebase.js"
 import {setDoc, doc, increment, addDoc, getDoc } from "firebase/firestore";
 import qs from "qs";
+import slack_verify from "../slack_verify.js";
 import {   
   get_wordle_score,
   get_worldle_score,
@@ -34,7 +35,10 @@ const parse_app_mention = (text) => {
 
 // test()
 
-export async function handler({body}, context){
+export async function handler({body, headers}, context){
+  if(!slack_verify(headers["X-Slack-Request-Timestamp"], body, headers["X-Slack-Signature"])){
+    return {statusCode: 401, body: "Unauthorized"}
+  }
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase() || "";
