@@ -1,4 +1,4 @@
-import db from "../firebase.mjs"
+import db from "../firebase.js"
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import qs from "qs";
 import slack_verify from "../slack_verify.js";
@@ -21,16 +21,16 @@ const parse_app_mention = (text) => {
   return [-1, -1];
 }
 
-async function test(){
-    const updates = [
-      setDoc(doc(db, "test", "test"), {
-        total: increment(5)
-      }, {merge: true})
-    ]
-    return;
-}
+// async function test(){
+//     const updates = [
+//       setDoc(doc(db, "test", "test"), {
+//         total: increment(5)
+//       }, {merge: true})
+//     ]
+//     return;
+// }
 
-test()
+// await test()
 
 export async function handler({body, headers}, context){
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
