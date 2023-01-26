@@ -1,5 +1,5 @@
 import db from "../firebase.js"
-import { getDoc, doc, getDocFromServer, getCountFromServer } from "firebase/firestore";
+import { collection, doc, getDocFromServer, getCountFromServer } from "firebase/firestore";
 import qs from "qs";
 
 
