@@ -13,19 +13,19 @@ import {
 const parse_text = (text) => {
   if(text.startsWith("wordle")){
     const [day, score] = get_wordle_score(text);
-    return score >= 0 ? ["wordle", day, score] : ["", , -1, -1];
+    return day === "" ? ["wordle", day, score] : ["", , -1, -1];
   }
   if(text.startsWith("daily quordle")){
     const [day, score] = get_quordle_score(text);
-    return score >= 0 ? ["quordle", day, score] : ["", , -1, -1];
+    return day === "" ? ["quordle", day, score] : ["", , -1, -1];
   }
   if(text.startsWith("countryle")){
     const [day, score] = get_countryle_score(text);
-    return score >= 0 ? ["countryle", day, score] : ["", , -1, -1];
+    return day === "" ? ["countryle", day, score] : ["", , -1, -1];
   }
   if(text.startsWith("#worldle")){
     const [day, score] = get_worldle_score(text);
-    return score >= 0 ? ["worldle", day, score] : ["", , -1, -1];
+    return day === "" ? ["worldle", day, score] : ["", , -1, -1];
   }
   return ["", , -1, -1];
 }
