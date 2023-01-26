@@ -38,6 +38,7 @@ const get_quordle_score = (lowercase_txt) => {
 }
 
 const get_worldle_score = (lowercase_txt) => {
+  console.log(lowercase_txt)
   const worldle_ind = lowercase_txt.indexOf("worldle");
   if(worldle_ind === -1){ return ["", -1]; }
   const sp1 = lowercase_txt.indexOf(" ", worldle_ind);
