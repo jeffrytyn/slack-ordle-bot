@@ -6,7 +6,6 @@ import qs from "qs";
 
 export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
-  const user_id = body_obj.user_id;
   const [game, count] = body_obj.text?.toLowerCase().split(" ") || ["", ""];
   if(game !== "wordle" && game !== "worldle" && game !== "quordle" && game !== "countryle"){
     return {
@@ -36,7 +35,7 @@ export async function handler({body}, context){
     statusCode: 200,
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({
-      response_type: "ephemeral",
+      response_type: "in_channel",
       blocks: [
         {
           type: "section",
