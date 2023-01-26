@@ -11,23 +11,25 @@ import {
   get_countryle_score } from "../game_parsers.js";
 
 const parse_text = (text) => {
+  console.log(text);
+  console.log(text.startsWith("wordle"))
   if(text.startsWith("wordle")){
     const [day, score] = get_wordle_score(text);
-    return day === "" ? ["wordle", day, score] : ["", , -1, -1];
+    return day === "" ? ["wordle", day, score] : ["", , "", -1];
   }
   if(text.startsWith("daily quordle")){
     const [day, score] = get_quordle_score(text);
-    return day === "" ? ["quordle", day, score] : ["", , -1, -1];
+    return day === "" ? ["quordle", day, score] : ["", , "", -1];
   }
   if(text.startsWith("countryle")){
     const [day, score] = get_countryle_score(text);
-    return day === "" ? ["countryle", day, score] : ["", , -1, -1];
+    return day === "" ? ["countryle", day, score] : ["", , "", -1];
   }
   if(text.contains("https://worldle.teuteuf.fr")){
     const [day, score] = get_worldle_score(text);
-    return day === "" ? ["worldle", day, score] : ["", , -1, -1];
+    return day === "" ? ["worldle", day, score] : ["", , "", -1];
   }
-  return ["", , -1, -1];
+  return ["", , "", -1];
 }
 
 async function add_score(game, day, score, user_id){
@@ -70,7 +72,6 @@ async function event_handler(body, headers){
   }
   const ts = body_obj.event.ts;
   const channel = body_obj.event.channel;
-  console.log(text);
   const [game, day, score] = parse_text(text);
   console.log(`${game} ${day} ${score}`)
   const added = await add_score(game, day, score, user_id);
