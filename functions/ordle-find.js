@@ -30,7 +30,7 @@ export async function handler({body}, context){
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `**${game.charAt(0).toUpperCase() + game.slice(1)} Stats**\nTotal: ${score}\nDays played: 100`
+              text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Stats*\nTotal score: ${score}\nDays played: 100`
             }
           }
         ]
