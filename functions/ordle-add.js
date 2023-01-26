@@ -49,8 +49,8 @@ async function event_handler(body, headers){
     return {statusCode: 401, body: "Unauthorized"}
   }
   const body_obj = JSON.parse(body) || {};
-  console.log(body)
-  if(body_obj.event?.type !== "message" || !body_obj.event?.subtype){
+  console.log(JSON.stringify(body_obj.event))
+  if(body_obj.event?.type !== "message" || body_obj.event?.subtype){
     return {statusCode: 200}
   }
   if(!auth.currentUser){
@@ -65,8 +65,9 @@ async function event_handler(body, headers){
   const ts = body_obj.event.ts;
   const channel = body_obj.event.channel;
   const [game, day, score] = parse_text(text);
+  console.log(`${game} ${day} ${score}`)
   const added = await add_score(game, day, score);
-  console.log(`${game} ${day} ${score} ${added}`)
+  console.log(`${added}`)
   if(added == 1){
     await fetch("https://slack.com/api/chat.postEphemeral", {
       method: "POST",
