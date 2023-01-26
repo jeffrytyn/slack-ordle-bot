@@ -48,13 +48,14 @@ async function event_handler(body, headers){
     console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
   }
+  const body_obj = JSON.parse(body) || {};
+  console.log(body)
+  if(body_obj.event?.type !== "message" || !body_obj.event?.subtype){
+    return {statusCode: 200}
+  }
   if(!auth.currentUser){
     console.log("Firebase anonymous sign in");
     await signInAnonymously(auth);
-  }
-  const body_obj = JSON.parse(body) || {};
-  if(body_obj.event?.type !== "message" || !body_obj.event?.subtype){
-    return {statusCode: 200}
   }
   const user_id = body_obj.event.user;
   const text = body_obj.event.text?.toLowerCase().trim() || "";
