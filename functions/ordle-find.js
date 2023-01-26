@@ -1,5 +1,5 @@
 import db from "../firebase.js"
-import { getDoc, doc, getDocFromServer } from "firebase/firestore";
+import { getDoc, doc, getDocFromServer, getCountFromServer } from "firebase/firestore";
 import qs from "qs";
 
 
@@ -20,6 +20,7 @@ export async function handler({body}, context){
   const snap = await getDocFromServer(doc(db, game, user_id))
   if(snap.exists()){
     const score = snap.data().total;
+    const days = await getCountFromServer(collection(db, game, user_id, "scores"));
     return {
       statusCode: 200,
       headers: {"Content-Type": "application/json"},
@@ -30,7 +31,7 @@ export async function handler({body}, context){
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Stats*\nTotal score: ${score}\nDays played: 100`
+              text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Stats*\nTotal score: ${score}\nDays played: ${days.data().count}`
             }
           }
         ]
