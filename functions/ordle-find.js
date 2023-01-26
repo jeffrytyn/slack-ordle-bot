@@ -1,5 +1,5 @@
 import db from "../firebase.js"
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, getDocFromServer } from "firebase/firestore";
 import qs from "qs";
 
 
@@ -17,7 +17,7 @@ export async function handler({body}, context){
         text: "Sorry, that game is not supported. Please try a game that is."
       })}
   }
-  const snap = await getDoc(doc(db, game, user_id))
+  const snap = await getDocFromServer(doc(db, game, user_id))
   if(snap.exists()){
     const score = snap.data().total;
     return {
