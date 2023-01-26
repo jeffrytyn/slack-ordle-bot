@@ -20,10 +20,7 @@ import {
 //       });
 //   }
 // });
-await signInAnonymously(auth)
-.catch((error) => {
-  console.log(`${error.message}`);
-});
+
 
 const parse_app_mention = (text) => {
   let [day, score] = get_wordle_score(text);
@@ -58,6 +55,7 @@ export async function handler({body, headers}, context){
     console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
   }
+  if(!auth.currentUser) await signInAnonymously(auth);
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase() || "";
