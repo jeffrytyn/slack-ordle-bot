@@ -1,5 +1,5 @@
 import db from "../firebase.js"
-import {setDoc, doc, increment, collection, addDoc, getDoc } from "firebase/firestore";
+import {setDoc, doc, increment, addDoc, getDoc } from "firebase/firestore";
 import qs from "qs";
 import {   
   get_wordle_score,
@@ -48,35 +48,33 @@ export async function handler({body}, context){
     game = "countryle"
   }
   const date_ref = doc(db, game, user_id, "scores", day);
-  await getDoc(doc).then((res) => {
-    if(res.exists()){
-      return {
-        statusCode: 200,
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          response_type: "ephemeral",
-          text: `Day ${day} has already been submitted.`
-        })
-      }
-    }else{
-      const updates = [
-        setDoc(doc(db, game, user_id), {
-          total: increment(score)
-        }, {merge: true}),
-        addDoc(date_ref, {
-          score: score
-        })
-      ]
-      return Promise.all(updates).then(() => {
-        return {
-          statusCode: 200,
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({
-            response_type: "in_channel",
-            text: `${game.charAt(0) + game.slice(1)} ${day} score: ${score}`
-          })
-        }
+  const date_doc = await getDoc(date_ref);
+  if(date_doc.exists()){
+    return {
+      statusCode: 200,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        response_type: "ephemeral",
+        text: `Day ${day} has already been submitted.`
       })
     }
-  })
+  }else{
+    const updates = [
+      setDoc(doc(db, game, user_id), {
+        total: increment(score)
+      }, {merge: true}),
+      addDoc(date_ref, {
+        score: score
+      })
+    ]
+    await Promise.all(updates);
+    return {
+      statusCode: 200,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        response_type: "in_channel",
+        text: `${game.charAt(0) + game.slice(1)} ${day} score: ${score}`
+      })
+    }
+  }
 };
