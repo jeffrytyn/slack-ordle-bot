@@ -1,4 +1,4 @@
-import db from "../firebase.js"
+import db from "../firebase.mjs"
 import { collection, orderBy, query, limit, getDocs} from "firebase/firestore";
 import qs from "qs";
 
@@ -10,7 +10,7 @@ export async function handler({body}, context){
     return {statusCode: 401, body: "Unauthorized"}
   }
   const body_obj = qs.parse(body) || {};
-  const [game, count] = body_obj.text?.toLowerCase().split(" ").map(w => w.trim()) || ["", ""];
+  let [game, count] = body_obj.text?.toLowerCase().split(" ").map(w => w.trim()) || ["", ""];
   
   if(game !== "wordle" && game !== "worldle" && game !== "quordle" && game !== "countryle"){
     return {
