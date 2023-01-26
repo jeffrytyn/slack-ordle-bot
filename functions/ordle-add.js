@@ -47,6 +47,7 @@ export async function handler({body}, context){
   }else if(game_id === 3){
     game = "countryle"
   }
+  console.log(`${game} ${day} ${score}`);
   const date_ref = doc(db, game, user_id, "scores", day);
   console.log("ref");
   const date_doc = await getDoc(date_ref);
@@ -76,7 +77,7 @@ export async function handler({body}, context){
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         response_type: "in_channel",
-        text: `${game.charAt(0) + game.slice(1)} ${day} score: ${score}`
+        text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
       })
     }
   }
