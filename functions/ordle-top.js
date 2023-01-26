@@ -30,10 +30,10 @@ export async function handler({body, headers}, context){
   if(isNaN(count) || isNaN(parseInt(count))){ count = 5;}
   const q = query(collection(db, game), orderBy("total", "desc"), limit(parseInt(count)));
   const snap = await getDocs(q);
-  const score = [];
+  const scores = [];
   for(let i = 0; i < snap.docs.length; i++){
     const doc = snap.docs[i];
-    score.push(`${i == 0 ? ":tada: " : ""}<@${doc.id}>: ${doc.data().total}${i == 0 ? " :tada:" : ""}`);
+    scores.push(`${i == 0 ? ":tada: " : ""}<@${doc.id}>: ${doc.data().total}${i == 0 ? " :tada:" : ""}`);
   }
   return {
     statusCode: 200,
@@ -45,7 +45,7 @@ export async function handler({body, headers}, context){
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Leaderboard*\n${score.join("\n")}`
+            text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Leaderboard*\n${(scores.length > 0) ? scores.join("\n") : "No one bruh play this game"}`
           }
         }
       ]
