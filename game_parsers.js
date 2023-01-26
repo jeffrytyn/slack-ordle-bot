@@ -10,7 +10,7 @@ const get_wordle_score = (lowercase_txt) => {
   const sp2 = lowercase_txt.indexOf(" ", sp1+1);
   const day = lowercase_txt.substring(sp1+1, sp2);
   const score_text = lowercase_txt.substring(sp2+1, sp2+2);
-  return [day, score_text === 'x' ? 0 : MAX_WORDLE_SCORE - parseInt(score_text)];
+  return [day || "", score_text === 'x' ? 0 : MAX_WORDLE_SCORE - parseInt(score_text)];
 }
 
 const get_quordle_score = (lowercase_txt) => {
@@ -34,7 +34,7 @@ const get_quordle_score = (lowercase_txt) => {
     else if(emoji === "eight") { total_score += 8; }
     else if(emoji === "nine") { total_score += 9; }    
   }
-  return [day, 4*MAX_QUORDLE_SCORE - total_score]
+  return [day || "", 4*MAX_QUORDLE_SCORE - total_score]
 }
 
 const get_worldle_score = (lowercase_txt) => {
@@ -44,7 +44,7 @@ const get_worldle_score = (lowercase_txt) => {
   const sp2 = lowercase_txt.indexOf(" ", sp1+1);
   const day = lowercase_txt.substring(sp1+2, sp2);
   const score_text = lowercase_txt.substring(sp2+1, sp2+2);
-  return [day, score_text === 'x' ? 0 : MAX_WORLDLE_SCORE - parseInt(score_text)];
+  return [day || "", score_text === 'x' ? 0 : MAX_WORLDLE_SCORE - parseInt(score_text)];
 }
 
 const get_countryle_score = (lowercase_txt) => {
@@ -55,7 +55,7 @@ const get_countryle_score = (lowercase_txt) => {
   const day = lowercase_txt.substring(sp1+1, nl).trim();
   const score_ind = lowercase_txt.indexOf(" tries");
   const score_text = lowercase_txt.substring(score_ind-1, score_ind);
-  return [day, score_text === 'x' ? 0 : MAX_COUNTRYLE_SCORE - parseInt(score_text)];
+  return [day || "", score_text === 'x' ? 0 : MAX_COUNTRYLE_SCORE - parseInt(score_text)];
 }
 
 export {
