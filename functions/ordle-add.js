@@ -73,15 +73,12 @@ export async function handler({body}, context){
       })
     }
   }else{
-    const updates = [
-      setDoc(doc(db, game, user_id), {
-        total: increment(score)
-      }, {merge: true}),
-      setDoc(date_ref, {
-        score: score
-      })
-    ]
-    // await Promise.all(updates);
+    setDoc(doc(db, game, user_id), {
+      total: increment(score)
+    }, {merge: true}),
+    setDoc(date_ref, {
+      score: score
+    })
     return {
       statusCode: 200,
       headers: {"Content-Type": "application/json"},

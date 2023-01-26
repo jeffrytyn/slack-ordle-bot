@@ -8,7 +8,7 @@ export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const game = body_obj.text?.toLowerCase() || "";
-  if(text !== "wordle" && text !== "worldle" && text !== "quordle" && text !== "countryle"){
+  if(game !== "wordle" && game !== "worldle" && game !== "quordle" && game !== "countryle"){
     return {
       statusCode: 200,
       headers: {"Content-Type": "application/json"},
@@ -27,7 +27,7 @@ export async function handler({body}, context){
         response_type: "ephemeral",
         text: {
           type: "mrkdwn",
-          text: `**${game.charAt(0).toUpperCase() + game.slice(1)} Stats**\nTotal: <@${user_id}>\nDays played: 100`
+          text: `**${game.charAt(0).toUpperCase() + game.slice(1)} Stats**\nTotal: ${score}\nDays played: 100`
         }
       })}
   }else{
@@ -39,4 +39,5 @@ export async function handler({body}, context){
         text: `No score for ${game.charAt(0).toUpperCase() + game.slice(1)} found.`
       })}
   }
+  // <@${user_id}>
 };
