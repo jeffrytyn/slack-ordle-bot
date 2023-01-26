@@ -43,7 +43,7 @@ async function add_score(game, day, score){
   }
 }
 
-async function event_handler(body){
+async function event_handler(body, headers){
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
     console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
@@ -95,7 +95,9 @@ async function event_handler(body){
   return {statusCode: 200}
 }
 
-export default event_handler;
+export async function handler({body, headers}, context){
+  return event_handler(body, headers);
+};
 
 // export async function handler({body, headers}, context){
 //   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
