@@ -36,6 +36,7 @@ const parse_app_mention = (text) => {
 // test()
 
 export async function handler({body, headers}, context){
+  console.log(JSON.stringify(headers))
   console.log(`${headers["X-Slack-Request-Timestamp"]} ${headers["X-Slack-Signature"]}`)
   if(!slack_verify(headers["X-Slack-Request-Timestamp"], body, headers["X-Slack-Signature"])){
     console.log("false");
