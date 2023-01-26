@@ -23,7 +23,7 @@ const parse_text = (text) => {
     const [day, score] = get_countryle_score(text);
     return day === "" ? ["countryle", day, score] : ["", , -1, -1];
   }
-  if(text.startsWith("#worldle")){
+  if(text.contains("https://worldle.teuteuf.fr")){
     const [day, score] = get_worldle_score(text);
     return day === "" ? ["worldle", day, score] : ["", , -1, -1];
   }
@@ -70,6 +70,7 @@ async function event_handler(body, headers){
   }
   const ts = body_obj.event.ts;
   const channel = body_obj.event.channel;
+  console.log(text);
   const [game, day, score] = parse_text(text);
   console.log(`${game} ${day} ${score}`)
   const added = await add_score(game, day, score, user_id);

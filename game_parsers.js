@@ -5,7 +5,7 @@ const MAX_COUNTRYLE_SCORE = 196;
 
 const get_wordle_score = (lowercase_txt) => {
   const wordle_ind = lowercase_txt.indexOf("wordle");
-  if(wordle_ind === -1){ return [-1, -1]; }
+  if(wordle_ind === -1){ return ["", -1]; }
   const sp1 = lowercase_txt.indexOf(" ", wordle_ind);
   const sp2 = lowercase_txt.indexOf(" ", sp1+1);
   const day = lowercase_txt.substring(sp1+1, sp2);
@@ -15,7 +15,7 @@ const get_wordle_score = (lowercase_txt) => {
 
 const get_quordle_score = (lowercase_txt) => {
   const quordle_ind = lowercase_txt.indexOf("quordle");
-  if(quordle_ind === -1){ return [-1, -1]; }
+  if(quordle_ind === -1){ return ["", -1]; }
   const sp1 = lowercase_txt.indexOf(" ", quordle_ind);
   const col = lowercase_txt.indexOf(":", sp1+1);
   const day = lowercase_txt.substring(sp1+1, col).trim();
@@ -38,8 +38,8 @@ const get_quordle_score = (lowercase_txt) => {
 }
 
 const get_worldle_score = (lowercase_txt) => {
-  const worldle_ind = lowercase_txt.indexOf("#worldle");
-  if(worldle_ind === -1){ return [-1, -1]; }
+  const worldle_ind = lowercase_txt.indexOf("worldle");
+  if(worldle_ind === -1){ return ["", -1]; }
   const sp1 = lowercase_txt.indexOf(" ", worldle_ind);
   const sp2 = lowercase_txt.indexOf(" ", sp1+1);
   const day = lowercase_txt.substring(sp1+2, sp2);
@@ -49,7 +49,7 @@ const get_worldle_score = (lowercase_txt) => {
 
 const get_countryle_score = (lowercase_txt) => {
   const countryle_ind = lowercase_txt.indexOf("#countryle");
-  if(countryle_ind === -1){ return [-1, -1]; }
+  if(countryle_ind === -1){ return ["", -1]; }
   const sp1 = lowercase_txt.indexOf(" ", countryle_ind);
   const nl = lowercase_txt.indexOf("\n", sp1+1);
   const day = lowercase_txt.substring(sp1+1, nl).trim();
