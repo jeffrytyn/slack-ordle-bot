@@ -25,10 +25,15 @@ export async function handler({body}, context){
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         response_type: "ephemeral",
-        text: {
-          type: "mrkdwn",
-          text: `**${game.charAt(0).toUpperCase() + game.slice(1)} Stats**\nTotal: ${score}\nDays played: 100`
-        }
+        blocks: [
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: `**${game.charAt(0).toUpperCase() + game.slice(1)} Stats**\nTotal: ${score}\nDays played: 100`
+            }
+          }
+        ]
       })}
   }else{
     return {
