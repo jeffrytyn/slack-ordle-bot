@@ -1,5 +1,5 @@
 import db from "../firebase.js"
-import {setDoc, doc, increment, addDoc, getDoc } from "firebase/firestore";
+import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import qs from "qs";
 import slack_verify from "../slack_verify.js";
 import {   
