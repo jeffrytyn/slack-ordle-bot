@@ -83,11 +83,8 @@ export async function handler({body}, context){
   }else if(game_id === 3){
     game = "countryle"
   }
-  console.log(`${game} ${day} ${score}`);
   const date_ref = doc(db, game, user_id, "scores", day);
-  console.log("ref");
   const date_doc = await getDoc(date_ref);
-  console.log("exists " + date_doc.exists())
   if(date_doc.exists()){
     return {
       statusCode: 200,
@@ -98,12 +95,11 @@ export async function handler({body}, context){
       })
     }
   }else{
-    console.log("not exists " + day);
     const updates = [
       setDoc(doc(db, game, user_id), {
         total: increment(score)
       }, {merge: true}),
-      addDoc(date_ref, {
+      addDoc(doc(db, game, user_id, "scores", day), {
         score: score
       })
     ]
