@@ -6,14 +6,15 @@ import qs from "qs";
 
 export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
-  const [game, count] = body_obj.text?.toLowerCase().split(" ") || ["", ""];
+  const [game, count] = body_obj.text?.toLowerCase().split(" ").map(w => w.trim()) || ["", ""];
+  
   if(game !== "wordle" && game !== "worldle" && game !== "quordle" && game !== "countryle"){
     return {
       statusCode: 200,
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         response_type: "ephemeral",
-        text: "Sorry, that game is not supported. See OrdleBot info for valid games."
+        text: (game.length === 0) ? "Please enter a game name." : `Sorry, ${game} is not supported. See OrdleBot info for valid games.`
       })}
   }
   if(isNaN(count) || isNaN(parseInt(count))){
@@ -22,7 +23,7 @@ export async function handler({body}, context){
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         response_type: "ephemeral",
-        text: "Input a valid integer to see the leaderboard."
+        text: `Input a valid integer to see the ${game.charAt(0).toUpperCase() + game.slice(1)} leaderboard.`
       })}
   }
   const q = query(collection(db, game), orderBy("total", "desc"), limit(parseInt(count)));
