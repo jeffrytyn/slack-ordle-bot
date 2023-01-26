@@ -10,7 +10,7 @@ describe("Wordle", function(){
     ⬛🟩⬛⬛🟩
     ⬛🟩🟩⬛🟩
     🟩🟩🟩🟩🟩`.toLowerCase())
-    assert.equal(585, day);
+    assert.equal("585", day);
     assert.equal(3, score);
   });
   
@@ -22,7 +22,7 @@ describe("Wordle", function(){
     :large_green_square::large_green_square::white_large_square::white_large_square::large_green_square:
     :large_green_square::large_green_square::white_large_square::white_large_square::large_green_square:
     :large_green_square::large_green_square::white_large_square::white_large_square::large_green_square:`.toLowerCase())
-    assert.equal(579, day);
+    assert.equal("579", day);
     assert.equal(0 , score);
   });
 })
@@ -32,7 +32,7 @@ describe("Worldle", function(){
     const [day, score] = get_worldle_score(`#worldle #360 1/6 (100%)
     :large_green_square::large_green_square::large_green_square::large_green_square::large_green_square::tada:
     https://worldle.teuteuf.fr`.toLowerCase())
-    assert.equal(360, day);
+    assert.equal("360", day);
     assert.equal(6, score);
   });
   
@@ -44,7 +44,7 @@ describe("Worldle", function(){
     :large_green_square::large_green_square::white_large_square::white_large_square::large_green_square:
     :large_green_square::large_green_square::white_large_square::white_large_square::large_green_square:
     :large_green_square::large_green_square::white_large_square::white_large_square::large_green_square:`.toLowerCase())
-    assert.equal(100, day);
+    assert.equal("100", day);
     assert.equal(0 , score);
   });
 })
@@ -73,7 +73,7 @@ describe("Quordle", function(){
     :white_large_square::large_yellow_square::white_large_square::white_large_square::white_large_square: :white_large_square::white_large_square::white_large_square::white_large_square::large_green_square:
     :white_large_square::large_yellow_square::white_large_square::white_large_square::white_large_square: :white_large_square::white_large_square::white_large_square::white_large_square::large_green_square:
     `.toLowerCase())
-    assert.equal(366, day);
+    assert.equal("366", day);
     assert.equal(0, score);
   });
 
@@ -95,7 +95,7 @@ describe("Quordle", function(){
     :large_green_square::large_green_square::large_green_square::large_green_square::large_green_square: :white_large_square::white_large_square::white_large_square::large_green_square::large_yellow_square:
     :black_large_square::black_large_square::black_large_square::black_large_square::black_large_square: :large_green_square::large_green_square::large_green_square::large_green_square::large_green_square:
     `.toLowerCase());
-    assert.equal(360, day);
+    assert.equal("360", day);
     assert.equal(40-22, score);
 
   });
@@ -108,7 +108,7 @@ describe("Countryle", function(){
     :large_green_circle::large_green_circle::white_circle::white_circle::white_circle:
     :large_green_circle::large_green_circle::large_green_circle::large_green_circle::large_green_circle:
     https://countryle.com`.toLowerCase());
-    assert.equal(327, day);
+    assert.equal("327", day);
     assert.equal(196-2, score);
   })
 });

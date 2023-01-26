@@ -18,7 +18,7 @@ const get_quordle_score = (lowercase_txt) => {
   if(quordle_ind === -1){ return [-1, -1]; }
   const sp1 = lowercase_txt.indexOf(" ", quordle_ind);
   const col = lowercase_txt.indexOf(":", sp1+1);
-  const day = lowercase_txt.substring(sp1+1, col);
+  const day = lowercase_txt.substring(sp1+1, col).trim();
   const score_emojis = lowercase_txt.substring(col, lowercase_txt.indexOf("quordle.com")).split(":")
   let total_score = 0;
   for(let emoji of score_emojis){
@@ -52,7 +52,7 @@ const get_countryle_score = (lowercase_txt) => {
   if(countryle_ind === -1){ return [-1, -1]; }
   const sp1 = lowercase_txt.indexOf(" ", countryle_ind);
   const nl = lowercase_txt.indexOf("\n", sp1+1);
-  const day = lowercase_txt.substring(sp1+1, nl);
+  const day = lowercase_txt.substring(sp1+1, nl).trim();
   const score_ind = lowercase_txt.indexOf(" tries");
   const score_text = lowercase_txt.substring(score_ind-1, score_ind);
   return [day, score_text === 'x' ? 0 : MAX_COUNTRYLE_SCORE - parseInt(score_text)];
