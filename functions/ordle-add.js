@@ -71,7 +71,7 @@ async function event_handler(body, headers){
   const [game, day, score] = parse_text(text);
   const added = await add_score(game, day, score, user_id);
   if(added == 1){
-    await fetch("https://slack.com/api/chat.postEphemeral", {
+    fetch("https://slack.com/api/chat.postEphemeral", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +84,7 @@ async function event_handler(body, headers){
       })
     })
   }else if(added == 2){
-    await fetch("https://slack.com/api/chat.postMessage", {
+    fetch("https://slack.com/api/chat.postMessage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
