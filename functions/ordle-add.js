@@ -48,7 +48,9 @@ export async function handler({body}, context){
     game = "countryle"
   }
   const date_ref = doc(db, game, user_id, "scores", day);
+  console.log("ref");
   const date_doc = await getDoc(date_ref);
+  console.log("exists " + date_doc.exists())
   if(date_doc.exists()){
     return {
       statusCode: 200,
