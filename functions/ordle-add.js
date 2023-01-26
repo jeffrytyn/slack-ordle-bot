@@ -36,7 +36,7 @@ export async function handler({body, headers}, context){
     statusCode: 200,
     headers: {"Content-type": "application/json"},
     body: JSON.stringify({
-      challenge: body.challenge,
+      challenge: body_obj.challenge || "",
     })
 };
   const user_id = body_obj.user_id;
