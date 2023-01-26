@@ -21,40 +21,18 @@ const parse_app_mention = (text) => {
 }
 
 // async function test(){
-//   const date_ref = doc(db, game, user_id, "scores", day);
-//   console.log("ref");
-//   const date_doc = await getDoc(date_ref);
-//   console.log("exists " + date_doc.exists())
-//   if(date_doc.exists()){
-//     return {
-//       statusCode: 200,
-//       headers: {"Content-Type": "application/json"},
-//       body: JSON.stringify({
-//         response_type: "ephemeral",
-//         text: `Day ${day} has already been submitted.`
-//       })
-//     }
-//   }else{
-//     console.log("not exists " + day);
 //     const updates = [
-//       setDoc(doc(db, game, user_id), {
-//         total: increment(score)
+//       setDoc(doc(db, "test", "test"), {
+//         total: increment(5)
 //       }, {merge: true}),
-//       addDoc(date_ref, {
-//         score: score
+//       setDoc(doc(db, "test", "test1"), {
+//         score: 6
 //       })
 //     ]
-//     await Promise.all(updates);
-//     return {
-//       statusCode: 200,
-//       headers: {"Content-Type": "application/json"},
-//       body: JSON.stringify({
-//         response_type: "in_channel",
-//         text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
-//       })
-//     }
-//   }
+//     return;
 // }
+
+// test()
 
 export async function handler({body}, context){
   const body_obj = qs.parse(body) || {};
@@ -103,7 +81,7 @@ export async function handler({body}, context){
         score: score
       })
     ]
-    await Promise.all(updates);
+    // await Promise.all(updates);
     return {
       statusCode: 200,
       headers: {"Content-Type": "application/json"},
