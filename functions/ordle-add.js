@@ -22,7 +22,6 @@ const parse_app_mention = (text) => {
 }
 
 export async function handler({body, headers}, context){
-  return {statusCode: 200, body: JSON.stringify({"challenge": body.challenge})}
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
     console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
@@ -32,6 +31,7 @@ export async function handler({body, headers}, context){
     await signInAnonymously(auth);
   }
   const body_obj = qs.parse(body) || {};
+  return {statusCode: 200, body: JSON.stringify({"challenge": body_obj.challenge})}
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase().trim() || "";
   if(!user_id || !text){
