@@ -22,7 +22,7 @@ const parse_app_mention = (text) => {
 }
 
 export async function handler({body, headers}, context){
-  return {statusCode: 200, body: JSON.stringify({"challenge": body.challenge}})
+  return {statusCode: 200, body: JSON.stringify({"challenge": body.challenge})}
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
     console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
