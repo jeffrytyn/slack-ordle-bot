@@ -31,7 +31,7 @@ export async function handler({body, headers}, context){
     await signInAnonymously(auth);
   }
   const body_obj = qs.parse(body) || {};
-  return {statusCode: 200, body: JSON.stringify({"challenge": body_obj.challenge})}
+  return {statusCode: 200, headers: {"Content-Type": "application/json"}, body: JSON.stringify({"challenge": body_obj.challenge})}
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase().trim() || "";
   if(!user_id || !text){
