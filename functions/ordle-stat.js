@@ -9,6 +9,10 @@ export async function handler({body}, context){
     console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
   }
+  if(!auth.currentUser){
+    console.log("Firebase anonymous sign in");
+    await signInAnonymously(auth);
+  }
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const game = body_obj.text?.toLowerCase().trim() || "";

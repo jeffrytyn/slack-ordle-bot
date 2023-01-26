@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import * as dotenv from 'dotenv'
 
 if (process.env.NODE_ENV !== 'production') {

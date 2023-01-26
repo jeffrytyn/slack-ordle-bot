@@ -1,5 +1,5 @@
 import {db, auth} from "../firebase.js"
-import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { signInAnonymously } from "firebase/auth";
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import qs from "qs";
 import slack_verify from "../slack_verify.js";
@@ -8,19 +8,6 @@ import {
   get_worldle_score,
   get_quordle_score,
   get_countryle_score } from "../game_parsers.js";
-
-
-// onAuthStateChanged(auth, async (user) => {
-//   if (user) {
-//     console.log("Firebase signed in");
-//   } else {
-//     await signInAnonymously(auth)
-//       .catch((error) => {
-//         console.log(`${error.message}`);
-//       });
-//   }
-// });
-
 
 const parse_app_mention = (text) => {
   let [day, score] = get_wordle_score(text);
@@ -33,22 +20,6 @@ const parse_app_mention = (text) => {
   if(score >= 0){ return [3, day, score]; }
   return [-1, -1];
 }
-
-// async function test(){
-//     // const updates = [
-//     //   setDoc(doc(db, "test", "test"), {
-//     //     total: increment(5)
-//     //   }, {merge: true})
-//     // ]
-//     return new Promise((resolve, reject) => {
-//       setTimeout(() => {
-//         resolve("done")
-//         }, 1000)
-//         })
-        
-// }
-
-// await test()
 
 export async function handler({body, headers}, context){
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
