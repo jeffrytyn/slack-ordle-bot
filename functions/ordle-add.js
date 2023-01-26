@@ -11,20 +11,26 @@ import {
   get_countryle_score } from "../game_parsers.js";
 
 const parse_text = (text) => {
-  if(!text.startsWith("wordle") && !text.startsWith("#worldle") &&
-     !text.startsWith("daily quordle") && !text.startsWith("countryle")) return ["", , -1, -1];
-  let [day, score] = get_wordle_score(text);
-  if(score >= 0){ return ["wordle", day, score]; }
-  [day, score] = get_worldle_score(text);
-  if(score >= 0){ return ["worldle", day, score]; }
-  [day, score] = get_quordle_score(text);
-  if(score >= 0){ return ["quordle", day, score]; }
-  [day, score] = get_countryle_score(text);
-  if(score >= 0){ return ["countryle", day, score]; }
+  if(text.startsWith("wordle")){
+    const [day, score] = get_wordle_score(text);
+    return score >= 0 ? ["wordle", day, score] : ["", , -1, -1];
+  }
+  if(text.startsWith("daily quordle")){
+    const [day, score] = get_quordle_score(text);
+    return score >= 0 ? ["quordle", day, score] : ["", , -1, -1];
+  }
+  if(text.startsWith("countryle")){
+    const [day, score] = get_countryle_score(text);
+    return score >= 0 ? ["countryle", day, score] : ["", , -1, -1];
+  }
+  if(text.startsWith("#worldle")){
+    const [day, score] = get_worldle_score(text);
+    return score >= 0 ? ["worldle", day, score] : ["", , -1, -1];
+  }
   return ["", , -1, -1];
 }
 
-async function add_score(game, day, score){
+async function add_score(game, day, score, user_id){
   if(game === "" || day === "") return 0;
   const date_ref = doc(db, game, user_id, "scores", day);
   const date_doc = await getDoc(date_ref);
@@ -66,7 +72,7 @@ async function event_handler(body, headers){
   const channel = body_obj.event.channel;
   const [game, day, score] = parse_text(text);
   console.log(`${game} ${day} ${score}`)
-  const added = await add_score(game, day, score);
+  const added = await add_score(game, day, score, user_id);
   console.log(`${added}`)
   if(added == 1){
     await fetch("https://slack.com/api/chat.postEphemeral", {
