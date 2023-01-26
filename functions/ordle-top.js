@@ -17,15 +17,7 @@ export async function handler({body}, context){
         text: (game.length === 0) ? "Please enter a game name." : `Sorry, ${game} is not supported. See OrdleBot info for valid games.`
       })}
   }
-  if(isNaN(count) || isNaN(parseInt(count))){
-    return {
-      statusCode: 200,
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        response_type: "ephemeral",
-        text: `Input a valid integer to see the ${game.charAt(0).toUpperCase() + game.slice(1)} leaderboard.`
-      })}
-  }
+  if(isNaN(count) || isNaN(parseInt(count))){ count = 5;}
   const q = query(collection(db, game), orderBy("total", "desc"), limit(parseInt(count)));
   const snap = await getDocs(q);
   const score = [];
