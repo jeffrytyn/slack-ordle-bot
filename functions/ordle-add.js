@@ -22,23 +22,16 @@ const parse_app_mention = (text) => {
 }
 
 export async function handler({body, headers}, context){
-  // if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
-  //   console.log("not slack request");
-  //   return {statusCode: 401, body: "Unauthorized"}
-  // }
-  // if(!auth.currentUser){
-  //   console.log("Firebase anonymous sign in");
-  //   await signInAnonymously(auth);
-  // }
-  const body_obj = JSON.parse(body) || qs.parse(body) || {};
-  console.log(JSON.stringify(body_obj))
-  return {
-    statusCode: 200,
-    headers: {"Content-type": "application/json"},
-    body: JSON.stringify({
-      challenge: body_obj.challenge || "",
-    })
-};
+  if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
+    console.log("not slack request");
+    return {statusCode: 401, body: "Unauthorized"}
+  }
+  if(!auth.currentUser){
+    console.log("Firebase anonymous sign in");
+    await signInAnonymously(auth);
+  }
+  const body_obj = qs.parse(body) || {};
+
   const user_id = body_obj.user_id;
   const text = body_obj.text?.toLowerCase().trim() || "";
   if(!user_id || !text){
