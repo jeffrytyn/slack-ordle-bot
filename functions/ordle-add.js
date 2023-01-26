@@ -69,7 +69,7 @@ export async function handler({body}, context){
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         response_type: "ephemeral",
-        text: `Day ${day} has already been submitted.`
+        text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} has already been submitted.`
       })
     }
   }else{
