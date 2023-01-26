@@ -10,15 +10,19 @@ import {
   get_countryle_score } from "../game_parsers.js";
 
 
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    console.log("Firebase signed in");
-  } else {
-    await signInAnonymously(auth)
-      .catch((error) => {
-        console.log(`${error.message}`);
-      });
-  }
+// onAuthStateChanged(auth, async (user) => {
+//   if (user) {
+//     console.log("Firebase signed in");
+//   } else {
+//     await signInAnonymously(auth)
+//       .catch((error) => {
+//         console.log(`${error.message}`);
+//       });
+//   }
+// });
+await signInAnonymously(auth)
+.catch((error) => {
+  console.log(`${error.message}`);
 });
 
 const parse_app_mention = (text) => {
