@@ -1,4 +1,4 @@
-import db from "../firebase.js"
+import {db, auth} from "../firebase.js"
 import { collection, doc, getDocFromServer, getCountFromServer } from "firebase/firestore";
 import qs from "qs";
 
@@ -49,5 +49,4 @@ export async function handler({body}, context){
         text: `No score for ${game.charAt(0).toUpperCase() + game.slice(1)} found.`
       })}
   }
-  // <@${user_id}>
 };

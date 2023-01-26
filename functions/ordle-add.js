@@ -1,4 +1,4 @@
-import db from "../firebase.js"
+import {db, auth} from "../firebase.js"
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import qs from "qs";
 import slack_verify from "../slack_verify.js";
@@ -8,6 +8,17 @@ import {
   get_quordle_score,
   get_countryle_score } from "../game_parsers.js";
 
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    console.log("Firebase signed in");
+  } else {
+    await signInAnonymously(auth)
+      .catch((error) => {
+        console.log(`${error.message}`);
+      });
+  }
+});
 
 const parse_app_mention = (text) => {
   let [day, score] = get_wordle_score(text);
@@ -22,12 +33,17 @@ const parse_app_mention = (text) => {
 }
 
 // async function test(){
-//     const updates = [
-//       setDoc(doc(db, "test", "test"), {
-//         total: increment(5)
-//       }, {merge: true})
-//     ]
-//     return;
+//     // const updates = [
+//     //   setDoc(doc(db, "test", "test"), {
+//     //     total: increment(5)
+//     //   }, {merge: true})
+//     // ]
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => {
+//         resolve("done")
+//         }, 1000)
+//         })
+        
 // }
 
 // await test()

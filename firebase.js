@@ -18,29 +18,10 @@ const firebaseConfig = {
 };
 
 // console.log(JSON.stringify(firebaseConfig))
-async function init_auth(){
-  const auth = getAuth(app);
-  await signInAnonymously(auth)
-    .then(() => {
-      console.log("Firebase signed in anonymously");
-    })
-    .catch((error) => {
-      console.log(`${error.message}`);
-    });
-}
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    console.log("Firebase signed in");
-  } else {
-    await signInAnonymously(auth)
-      .catch((error) => {
-        console.log(`${error.message}`);
-      });
-  }
-});
 
-export default db;
+
+export default {auth, db};
