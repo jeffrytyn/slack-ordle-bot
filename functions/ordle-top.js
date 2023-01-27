@@ -1,6 +1,5 @@
-import {db, auth} from "../firebase.js"
+import {db} from "../firebase.js"
 import { collection, orderBy, query, limit, getDocs} from "firebase/firestore";
-import { signInAnonymously } from "firebase/auth";
 import slack_verify from "../slack_verify.js";
 import qs from "qs";
 
@@ -10,10 +9,6 @@ export async function handler({body, headers}, context){
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
     console.log("not slack request");
     return {statusCode: 401, body: "Unauthorized"}
-  }
-  if(!auth.currentUser){
-    console.log("Firebase anonymous sign in");
-    await signInAnonymously(auth);
   }
   const body_obj = qs.parse(body) || {};
   let [game, count] = body_obj.text?.toLowerCase().split(" ").map(w => w.trim()) || ["", ""];

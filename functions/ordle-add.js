@@ -1,5 +1,4 @@
-import {db, auth} from "../firebase.js"
-import { signInAnonymously } from "firebase/auth";
+import {db} from "../firebase.js"
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import fetch from 'node-fetch'
 import slack_verify from "../slack_verify.js";
@@ -56,10 +55,6 @@ async function event_handler(body, headers){
   const body_obj = JSON.parse(body) || {};
   if(body_obj.event?.type !== "message" || body_obj.event?.subtype || body_obj.event?.bot_id || !body_obj.event?.ts){
     return {statusCode: 200}
-  }
-  if(!auth.currentUser){
-    console.log("Firebase anonymous sign in");
-    await signInAnonymously(auth);
   }
   const user_id = body_obj.event.user;
   const text = body_obj.event.text?.toLowerCase().trim() || "";
