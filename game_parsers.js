@@ -46,7 +46,7 @@ const get_worldle_score = (lowercase_txt) => {
 }
 
 const get_countryle_score = (lowercase_txt) => {
-  const reg = /^(?:<#C.*?\|countryle>|#countryle) (\d+)\s+Guessed in (\d+) tries./
+  const reg = /^(?:<#C.*?\|countryle>|#countryle) (\d+)\s+guessed in (\d+) tries./
   const matches = lowercase_txt.match(reg);
   if(!matches) return ["", -1];
   const day = matches[1];
