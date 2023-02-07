@@ -62,7 +62,7 @@ async function event_handler(body, headers){
   }else{
     const added = await add_score(game, day, score, user_id);
     console.log(added);
-    if(added){
+    if(added == true){
       console.log("new score")
       await fetch("https://slack.com/api/chat.postMessage", {
         method: "POST",
@@ -76,7 +76,7 @@ async function event_handler(body, headers){
           text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
         })
       })
-    }else{
+    }else if(added == false){
       console.log("old score")
       await fetch("https://slack.com/api/chat.postEphemeral", {
         method: "POST",
@@ -92,6 +92,7 @@ async function event_handler(body, headers){
       })
     }
   }
+  return {statusCode: 200};
 }
 
 export async function handler({body, headers}, context){
