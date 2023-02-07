@@ -9,31 +9,22 @@ import {
   get_countryle_score } from "../game_parsers.js";
 
 const parse_text = (text) => {
-  if(text.startsWith("wordle")){
-    const [day, score] = get_wordle_score(text);
-    return day !== "" ? ["wordle", day, score] : ["", , "", -1];
-  }
-  if(text.startsWith("daily quordle")){
-    const [day, score] = get_quordle_score(text);
-    return day !== "" ? ["quordle", day, score] : ["", , "", -1];
-  }
-  if(text.startsWith("countryle")){
-    const [day, score] = get_countryle_score(text);
-    return day !== "" ? ["countryle", day, score] : ["", , "", -1];
-  }
-  if(text.includes("https://worldle.teuteuf.fr")){
-    const [day, score] = get_worldle_score(text);
-    return day !== "" ? ["worldle", day, score] : ["", , "", -1];
-  }
-  return ["", , "", -1];
+  let [day, score] = get_wordle_score(text);
+  if(score !== -1) return ["wordle", day, score];
+  [day, score] = get_worldle_score(text);
+  if(score !== -1) return ["worldle", day, score];
+  [day, score] = get_quordle_score(text);
+  if(score !== -1) return ["quordle", day, score];
+  [day, score] = get_countryle_score(text);
+  if(score !== -1) return ["countryle", day, score];
+  return ["", "", -1];
 }
 
 async function add_score(game, day, score, user_id){
-  if(game === "" || day === "") return 0;
   const date_ref = doc(db, game, user_id, "scores", day);
   const date_doc = await getDoc(date_ref);
   if(date_doc.exists()){
-    return 1;
+    return false;
   }else{
     await Promise.all([
       setDoc(doc(db, game, user_id), {
@@ -43,7 +34,7 @@ async function add_score(game, day, score, user_id){
         score: score
       })
     ]);
-    return 2;
+    return true;
   }
 }
 
@@ -64,84 +55,40 @@ async function event_handler(body, headers){
   const ts = body_obj.event.ts;
   const channel = body_obj.event.channel;
   const [game, day, score] = parse_text(text);
-  const added = await add_score(game, day, score, user_id);
-  if(added == 1){
-    await fetch("https://slack.com/api/chat.postEphemeral", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.SLACK_APP_TOKEN}`
-      },
-      body: JSON.stringify({
-        channel: body_obj.event.channel,
-        user: user_id,
-        text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} has already been submitted.`
+  if(score === -1){
+    return {statusCode: 200};
+  }else{
+    const added = await add_score(game, day, score, user_id);
+    if(added){
+      await fetch("https://slack.com/api/chat.postMessage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.SLACK_APP_TOKEN}`
+        },
+        body: JSON.stringify({
+          channel: channel,
+          thread_ts: ts,
+          text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
+        })
       })
-    })
-  }else if(added == 2){
-    await fetch("https://slack.com/api/chat.postMessage", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.SLACK_APP_TOKEN}`
-      },
-      body: JSON.stringify({
-        channel: channel,
-        thread_ts: ts,
-        text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
+    }else{
+      await fetch("https://slack.com/api/chat.postEphemeral", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.SLACK_APP_TOKEN}`
+        },
+        body: JSON.stringify({
+          channel: body_obj.event.channel,
+          user: user_id,
+          text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} has already been submitted.`
+        })
       })
-    })
+    }
   }
-  return {statusCode: 200}
 }
 
 export async function handler({body, headers}, context){
   return event_handler(body, headers);
 };
-
-// export async function handler({body, headers}, context){
-//   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
-//     console.log("not slack request");
-//     return {statusCode: 401, body: "Unauthorized"}
-//   }
-//   if(!auth.currentUser){
-//     console.log("Firebase anonymous sign in");
-//     await signInAnonymously(auth);
-//   }
-//   const body_obj = qs.parse(body) || {};
-//   const user_id = body_obj.user_id;
-//   const text = body_obj.text?.toLowerCase().trim() || "";
-//   if(!user_id || !text){
-//     return {statusCode: 400, body: "Bad Request"}
-//   }
-//   const [game, day, score] = parse_text(text);
-//   const added = await add_score(game, day, score);
-//   if(added === 0){
-//     return {
-//       statusCode: 200,
-//       headers: {"Content-Type": "application/json"},
-//       body: JSON.stringify({
-//         response_type: "ephemeral",
-//         text: "Sorry, that game is not supported. Please try a game that is."
-//       })
-//     }
-//   }else if(added == 1){
-//     return {
-//       statusCode: 200,
-//       headers: {"Content-Type": "application/json"},
-//       body: JSON.stringify({
-//         response_type: "ephemeral",
-//         text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} has already been submitted.`
-//       })
-//     }
-//   }else{
-//     return {
-//       statusCode: 200,
-//       headers: {"Content-Type": "application/json"},
-//       body: JSON.stringify({
-//         response_type: "in_channel",
-//         text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
-//       })
-//     }
-//   }
-// };

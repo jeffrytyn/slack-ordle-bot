@@ -3,18 +3,19 @@ import assert from 'assert';
 
 
 describe("Wordle", function(){
-  it("wordle score with ios emojis", () => {
-    const [day, score] = get_wordle_score(`Wordle 585 4/6
-
-    ⬛⬛🟨⬛🟩
-    ⬛🟩⬛⬛🟩
-    ⬛🟩🟩⬛🟩
-    🟩🟩🟩🟩🟩`.toLowerCase())
-    assert.equal("585", day);
-    assert.equal(3, score);
+  it(("phrase with wordle"), () => {
+    const [day, score] = get_wordle_score("wordle sucks")
+    assert.equal("", day);
+    assert.equal(-1, score);
   });
+
+  it(("number wordle score"), () => {
+    const [day, score] = get_wordle_score("wordle 579 1/6\n".toLowerCase())
+    assert.equal("579", day);
+    assert.equal(6, score);
+  })
   
-  it("X wordle score with slack emojis", () => {
+  it("X wordle score", () => {
     const [day, score] = get_wordle_score(`Wordle 579 X/6
     :white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:
     :white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:
@@ -28,7 +29,13 @@ describe("Wordle", function(){
 })
 
 describe("Worldle", function(){
-  it("worldle score with slack", () => {
+  it("phrase with worldle", () => {
+    const [day, score] = get_worldle_score("worldle this is a phrase with worldle")
+    assert.equal("", day);
+    assert.equal(-1, score);
+  })
+
+  it("number worldle score", () => {
     const [day, score] = get_worldle_score(`#worldle #360 1/6 (100%)
     :large_green_square::large_green_square::large_green_square::large_green_square::large_green_square::tada:
     https://worldle.teuteuf.fr`.toLowerCase())
@@ -36,8 +43,8 @@ describe("Worldle", function(){
     assert.equal(6, score);
   });
   
-  it("X worldle", () => {
-    const [day, score] = get_worldle_score(`#worldle #100 X/6
+  it("X worldle score", () => {
+    const [day, score] = get_worldle_score(`#worldle #100 X/6 (83%)
     :white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:
     :white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:
     :white_large_square::white_large_square::large_yellow_square::large_yellow_square::large_green_square:
@@ -50,7 +57,7 @@ describe("Worldle", function(){
 })
 
 describe("Quordle", function(){
-  it("quordle score slack emojis failed", () => {
+  it("X quordle score", () => {
     const [day, score] = get_quordle_score(`Daily Quordle 366
     :large_red_square::large_red_square:
     :large_red_square::large_red_square:
@@ -77,7 +84,7 @@ describe("Quordle", function(){
     assert.equal(0, score);
   });
 
-  it("quordle score not failed", () => {
+  it("number quordle score", () => {
     const [day, score] = get_quordle_score(`Daily Quordle 360
     :six::seven:
     :four::five:
@@ -102,7 +109,7 @@ describe("Quordle", function(){
 })
 
 describe("Countryle", function(){
-  it("countryle score slack", () => {
+  it("number countryle score", () => {
     const [day, score] = get_countryle_score(`#Countryle 327
     Guessed in 2 tries.
     :large_green_circle::large_green_circle::white_circle::white_circle::white_circle:
