@@ -44,7 +44,9 @@ async function event_handler(body, headers){
     return {statusCode: 401, body: "Unauthorized"}
   }
   const body_obj = JSON.parse(body) || {};
+  console.log(body_obj.event)
   if(body_obj.event?.type !== "message" || body_obj.event?.subtype || body_obj.event?.bot_id || !body_obj.event?.ts){
+    console.log("is bot");
     return {statusCode: 200}
   }
   const user_id = body_obj.event.user;
