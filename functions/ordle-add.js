@@ -61,40 +61,39 @@ async function event_handler(body, headers){
   const [game, day, score] = parse_text(text);
   if(score === -1){
     return {statusCode: 200};
-  }else{
-    const added = await add_score(game, day, score, user_id);
-    if(added){
-      await fetch("https://slack.com/api/chat.postMessage", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.SLACK_APP_TOKEN}`
-        },
-        body: JSON.stringify({
-          channel: channel,
-          thread_ts: ts,
-          text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
-        })
-      })
-    }else{
-      await fetch("https://slack.com/api/chat.postEphemeral", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.SLACK_APP_TOKEN}`
-        },
-        body: JSON.stringify({
-          channel: body_obj.event.channel,
-          user: user_id,
-          text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} has already been submitted.`
-        })
-      })
-    }
-    return {statusCode: 200};
   }
+  const added = await add_score(game, day, score, user_id);
+  if(added){
+    await fetch("https://slack.com/api/chat.postMessage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.SLACK_APP_TOKEN}`
+      },
+      body: JSON.stringify({
+        channel: channel,
+        thread_ts: ts,
+        text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
+      })
+    })
+  }else{
+    await fetch("https://slack.com/api/chat.postEphemeral", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.SLACK_APP_TOKEN}`
+      },
+      body: JSON.stringify({
+        channel: body_obj.event.channel,
+        user: user_id,
+        text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} has already been submitted.`
+      })
+    })
+  }
+  return {statusCode: 200};
 }
 
-export async function handler({body, headers}, context){
+export async function handler({body, headers}, _){
   return event_handler(body, headers);
 };
 
