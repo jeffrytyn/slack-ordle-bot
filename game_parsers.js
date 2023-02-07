@@ -13,7 +13,7 @@ const get_wordle_score = (lowercase_txt) => {
 }
 
 const get_quordle_score = (lowercase_txt) => {
-  const reg = /^daily quordle (\d+)\n((?:\s*[:_a-z]+\n){2})\s*quordle.com/
+  const reg = /^daily quordle (\d+)\n((?:\s*[:_a-z]+\n){2})/
   const matches = lowercase_txt.match(reg);
   if(!matches) return ["", -1];
   const day = matches[1];
