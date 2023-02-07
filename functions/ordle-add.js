@@ -20,8 +20,6 @@ const parse_text = (text) => {
   return ["", "", -1];
 }
 
-console.log(parse_text("Wordle 597 has already been submitted."))
-
 async function add_score(game, day, score, user_id){
   const date_ref = doc(db, game, user_id, "scores", day);
   const date_doc = await getDoc(date_ref);
