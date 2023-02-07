@@ -20,6 +20,8 @@ const parse_text = (text) => {
   return ["", "", -1];
 }
 
+console.log(parse_text("Wordle 597 has already been submitted."))
+
 async function add_score(game, day, score, user_id){
   const date_ref = doc(db, game, user_id, "scores", day);
   const date_doc = await getDoc(date_ref);
@@ -46,7 +48,7 @@ async function event_handler(body, headers){
   const body_obj = JSON.parse(body) || {};
   console.log(body_obj.event)
   if(body_obj.event?.type !== "message" || body_obj.event?.subtype || body_obj.event?.bot_id || !body_obj.event?.ts){
-    console.log("is bot");
+    console.log("received non-user message");
     return {statusCode: 200}
   }
   const user_id = body_obj.event.user;
@@ -61,9 +63,7 @@ async function event_handler(body, headers){
     return {statusCode: 200};
   }else{
     const added = await add_score(game, day, score, user_id);
-    console.log(added);
-    if(added == true){
-      console.log("new score")
+    if(added){
       await fetch("https://slack.com/api/chat.postMessage", {
         method: "POST",
         headers: {
@@ -76,8 +76,7 @@ async function event_handler(body, headers){
           text: `${game.charAt(0).toUpperCase() + game.slice(1)} ${day} score: ${score}`
         })
       })
-    }else if(added == false){
-      console.log("old score")
+    }else{
       await fetch("https://slack.com/api/chat.postEphemeral", {
         method: "POST",
         headers: {
@@ -91,8 +90,8 @@ async function event_handler(body, headers){
         })
       })
     }
+    return {statusCode: 200};
   }
-  return {statusCode: 200};
 }
 
 export async function handler({body, headers}, context){
