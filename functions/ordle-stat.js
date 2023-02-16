@@ -2,7 +2,7 @@ import {db} from "../firebase.js"
 import { collection, doc, getDocFromServer, getCountFromServer } from "firebase/firestore";
 import slack_verify from "../slack_verify.js";
 import qs from "qs";
-import supported_games from "../supported_games.js";
+import supported_games from "../game_parsers.js";
 
 
 
