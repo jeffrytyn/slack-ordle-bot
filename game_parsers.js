@@ -1,5 +1,6 @@
 const MAX_WORDLE_SCORE = 7;
 const MAX_WORLDLE_SCORE = 7;
+const MAX_DUMBLE_SCORE = 7;
 const MAX_QUORDLE_SCORE = 10;
 const MAX_COUNTRYLE_SCORE = 196;
 
@@ -54,12 +55,22 @@ const get_countryle_score = (lowercase_txt) => {
   return [day, score_text === 'x' ? 0 : MAX_COUNTRYLE_SCORE - parseInt(score_text)];
 }
 
-const supported_games = set(["wordle", "worldle", "quordle", "countryle"])
+const get_dumble_score = (lowercase_txt) => {
+  const reg = /^dumble (\d+) ([x1-6])\/6\n/
+  const matches = lowercase_txt.match(reg);
+  if(!matches) return ["", -1];
+  const day = matches[1];
+  const score_text = matches[2];
+  return [day, score_text === 'x' ? 0 : MAX_DUMBLE_SCORE - parseInt(score_text)];
+}
+
+const supported_games = set(["wordle", "worldle", "quordle", "countryle", "dumble"])
 const game_parsers = {
   "wordle": get_wordle_score,
   "worldle": get_worldle_score,
   "quordle": get_quordle_score,
-  "countryle": get_countryle_score
+  "countryle": get_countryle_score,
+  "dumble": get_dumble_score
 }
 
-export {supported_games as default, game_parsers};
+export {supported_games, game_parsers};
