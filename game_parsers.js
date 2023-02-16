@@ -64,7 +64,7 @@ const get_dumble_score = (lowercase_txt) => {
   return [day, score_text === 'x' ? 0 : MAX_DUMBLE_SCORE - parseInt(score_text)];
 }
 
-const supported_games = set(["wordle", "worldle", "quordle", "countryle", "dumble"])
+const supported_games = new Set(["wordle", "worldle", "quordle", "countryle", "dumble"])
 const game_parsers = {
   "wordle": get_wordle_score,
   "worldle": get_worldle_score,
