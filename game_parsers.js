@@ -54,9 +54,12 @@ const get_countryle_score = (lowercase_txt) => {
   return [day, score_text === 'x' ? 0 : MAX_COUNTRYLE_SCORE - parseInt(score_text)];
 }
 
-export {
-  get_wordle_score,
-  get_worldle_score,
-  get_quordle_score,
-  get_countryle_score
+const supported_games = set(["wordle", "worldle", "quordle", "countryle"])
+const game_parsers = {
+  "wordle": get_wordle_score,
+  "worldle": get_worldle_score,
+  "quordle": get_quordle_score,
+  "countryle": get_countryle_score
 }
+
+export {supported_games as default, game_parsers};

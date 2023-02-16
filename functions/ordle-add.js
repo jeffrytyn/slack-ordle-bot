@@ -2,21 +2,13 @@ import {db} from "../firebase.js"
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import fetch from 'node-fetch'
 import slack_verify from "../slack_verify.js";
-import {   
-  get_wordle_score,
-  get_worldle_score,
-  get_quordle_score,
-  get_countryle_score } from "../game_parsers.js";
+import {game_parsers} from "../game_parsers.js";
 
 const parse_text = (text) => {
-  let [day, score] = get_wordle_score(text);
-  if(score !== -1) return ["wordle", day, score];
-  [day, score] = get_worldle_score(text);
-  if(score !== -1) return ["worldle", day, score];
-  [day, score] = get_quordle_score(text);
-  if(score !== -1) return ["quordle", day, score];
-  [day, score] = get_countryle_score(text);
-  if(score !== -1) return ["countryle", day, score];
+  for(const [game, parser] in Object.entries(game_parsers)){
+    let [day, score] = parser(text);
+    if(score !== -1) return [game, day, score];
+  }
   return ["", "", -1];
 }
 
