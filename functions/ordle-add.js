@@ -5,7 +5,7 @@ import slack_verify from "../slack_verify.js";
 import {game_parsers} from "../game_parsers.js";
 
 const parse_text = (text) => {
-  for(const [game, parser] in Object.entries(game_parsers)){
+  for(const [game, parser] of Object.entries(game_parsers)){
     let [day, score] = parser(text);
     if(score !== -1) return [game, day, score];
   }
