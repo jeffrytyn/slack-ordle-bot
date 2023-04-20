@@ -64,11 +64,37 @@ export const get_dumble_score = (lowercase_txt) => {
   return [day, score_text === 'x' ? 0 : MAX_DUMBLE_SCORE - parseInt(score_text)];
 }
 
-export const GAMES_PARSERS = {
-  "wordle": get_wordle_score,
-  "worldle": get_worldle_score,
-  "quordle": get_quordle_score,
-  "countryle": get_countryle_score,
-  "dumble": get_dumble_score
+const BASE_DATE = new Date("2023-04-20");
+const GAME_INFO = {
+  "wordle": {
+    "parser": get_wordle_score,
+    "day_number": 670,
+  },
+  "worldle": {
+    "parser": get_worldle_score,
+    "day_number": 454,
+  },
+  "quordle": {
+    "parser": get_quordle_score,
+    "day_number": 451,
+  },
+  "countryle": {
+    "parser": get_countryle_score,
+    "day_number": 425,
+  },
+  "dumble": {
+    "parser": get_dumble_score,
+    "day_number": 474,
+  }
 }
-export const SUPPORTED_GAMES = new Set(Object.keys(GAMES_PARSERS));
+
+const get_game_day = (date, game_name) => {
+  return Math.floor((date-BASE_DATE)/1000/60/60/24) + GAME_INFO[game_name].day_number;
+}
+export const is_valid_day = (game_name, submitted_day) => {
+  const valid_day = get_game_day(Date.now(), game_name);
+  console.log(valid_day, submitted_day);
+  return {valid_day, res: Math.abs(valid_day - submitted_day) <= 1};
+}
+
+export const SUPPORTED_GAMES = new Set(Object.keys(GAME_INFO));

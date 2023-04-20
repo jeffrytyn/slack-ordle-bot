@@ -21,6 +21,10 @@ const get_past_month_UTC  = () => {
   }
 }
 
+const get_year_UTC = () => {
+  return new Date().getUTCFullYear();
+}
+
 
 async function reset_score(){
   for(const game of SUPPORTED_GAMES){
@@ -34,7 +38,7 @@ async function reset_score(){
       }
       batch.update(doc.ref, {total: 0});
     }
-    batch.set(doc(db, game, get_past_month_UTC()), {max_score, max_user});
+    batch.set(doc(db, game, get_past_month_UTC()), {max_score, max_user, year: get_year_UTC()});
     await batch.commit();
   }
   return {

@@ -2,11 +2,11 @@ import {db} from "../firebase.js"
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import fetch from 'node-fetch'
 import slack_verify from "../slack_verify.js";
-import {GAMES_PARSERS} from "../game_parsers.js";
+import {GAME_INFO, is_valid_day} from "../game_parsers.js";
 
 const parse_text = (text) => {
-  for(const [game, parser] of Object.entries(GAMES_PARSERS)){
-    let [day, score] = parser(text);
+  for(const [game, info] of Object.entries(GAME_INFO)){
+    let [day, score] = info.parser(text);
     if(score !== -1) return [game, day, score];
   }
   return ["", "", -1];
@@ -51,6 +51,22 @@ async function event_handler(body, headers){
   const [game, day, score] = parse_text(text);
   if(score === -1){
     return {statusCode: 200};
+  }
+  const {res, valid_day} = is_valid_day(game, day);
+  if(!res){
+    await fetch("https://slack.com/api/chat.postEphemeral", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.SLACK_APP_TOKEN}`
+      },
+      body: JSON.stringify({
+        channel: body_obj.event.channel,
+        user: user_id,
+        text: `Submitted day for ${game.charAt(0).toUpperCase() + game.slice(1)} must be ${valid_day-1}, ${valid_day} or ${valid_day+1}.`
+      })
+    })
+    return {statusCode: 200}
   }
   const added = await add_score(game, day, score, user_id);
   if(added){
