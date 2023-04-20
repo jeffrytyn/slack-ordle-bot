@@ -41,7 +41,7 @@ export async function handler({body, headers}, context){
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Leaderboard*\n${(scores.length > 0) ? scores.join("\n") : "No one bruh play this game"}`
+            text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Leaderboard This Month*\n${(scores.length > 0) ? scores.join("\n") : "No one bruh play this game"}`
           }
         }
       ]
