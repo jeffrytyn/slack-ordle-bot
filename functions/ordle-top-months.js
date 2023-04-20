@@ -24,7 +24,7 @@ export async function handler({body, headers}, context){
   }
   const leaders = [];
   const curr_month_ind = new Date().getUTCMonth();
-  for(let i = 0; i < 12; i++){
+  for(let i = 1; i < 12; i++){
     const month = MONTHS[(curr_month_ind - i + 12) % 12];
     const snap = await getDocFromServer(doc(db, game, month))
     if(snap.exists()){

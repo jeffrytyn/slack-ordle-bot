@@ -22,7 +22,7 @@ async function reset_score(){
     }
     const past_month = get_past_month_UTC();
     const year = past_month === MONTHS[11] ? get_year_UTC() - 1 : get_year_UTC();
-    batch.set(doc(db, game, past_month), {max_score, max_user, year});
+    if(max_user !== "") batch.set(doc(db, game, past_month), {max_score, max_user, year});
     await batch.commit();
   }
   return {

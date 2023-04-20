@@ -63,7 +63,7 @@ async function event_handler(body, headers){
       body: JSON.stringify({
         channel: body_obj.event.channel,
         user: user_id,
-        text: `Submitted day for ${game.charAt(0).toUpperCase() + game.slice(1)} must be ${valid_day-1}, ${valid_day} or ${valid_day+1}.`
+        text: `${game.charAt(0).toUpperCase() + game.slice(1)} day must be ${valid_day-1}, ${valid_day} or ${valid_day+1}.`
       })
     })
     return {statusCode: 200}
