@@ -65,7 +65,7 @@ export const get_dumble_score = (lowercase_txt) => {
 }
 
 const BASE_DATE = new Date("2023-04-20");
-const GAME_INFO = {
+export const GAME_INFO = {
   "wordle": {
     "parser": get_wordle_score,
     "day_number": 670,
