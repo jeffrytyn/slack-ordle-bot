@@ -22,18 +22,28 @@ export async function handler({body, headers}, context){
         text: (game.length === 0) ? "Please enter a game name." : `Sorry, '${game}' is not supported. See OrdleBot info for valid games.`
       })}
   }
-  const leaders = [];
+  const promises = [];
   const curr_month_ind = new Date().getUTCMonth();
   for(let i = 1; i < 12; i++){
     const month = MONTHS[(curr_month_ind - i + 12) % 12];
-    const snap = await getDocFromServer(doc(db, game, month))
-    if(snap.exists()){
-      const data = doc.data();
-      leaders.push(`${month} ${data.year}: <@${data.max_user}> with ${data.max_sore} points`)
-    }else{
-      leaders.push(`${month} ${i > curr_month_ind ? get_year_UTC() - 1 : get_year_UTC()}: _N/A_`)
-    }
+    promises.push(getDocFromServer(doc(db, game, month)))
   }
+
+  const leaders = [];
+  await Promise.allSettled(promises).then((results) => {
+    results.forEach((result, i) => {
+      const month = MONTHS[(curr_month_ind - i + 12) % 12];
+      if(result.status === "fulfilled"){
+        const snap = result.value;
+        if(snap.exists()){
+          const data = snap.data();
+          leaders.push(`${month} ${data.year}: <@${data.max_user}> with ${data.max_sore} points`)
+        }else{
+          leaders.push(`${month} ${i > curr_month_ind ? get_year_UTC() - 1 : get_year_UTC()}: _N/A_`)
+        }
+      }
+    })
+  })
   return {
     statusCode: 200,
     headers: {"Content-Type": "application/json"},
