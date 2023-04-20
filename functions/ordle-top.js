@@ -20,7 +20,7 @@ export async function handler({body, headers}, context){
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         response_type: "ephemeral",
-        text: (game.length === 0) ? "Please enter a game name." : `Sorry, ${game} is not supported. See OrdleBot info for valid games.`
+        text: (game.length === 0) ? "Please enter a game name." : `Sorry, '${game}' is not supported. See OrdleBot info for valid games.`
       })}
   }
   if(isNaN(count) || isNaN(parseInt(count))){ count = 5;}

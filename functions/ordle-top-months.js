@@ -44,7 +44,7 @@ export async function handler({body, headers}, context){
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Past Leaders*\n${leaders.join("\n")}}`
+            text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Past Leaders*\n${leaders.join("\n")}`
           }
         }
       ]
