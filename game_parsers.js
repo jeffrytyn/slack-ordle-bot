@@ -71,4 +71,4 @@ export const GAMES_PARSERS = {
   "countryle": get_countryle_score,
   "dumble": get_dumble_score
 }
-export const SUPPORTED_GAMES = Object.keys(GAMES_PARSERS);
+export const SUPPORTED_GAMES = new Set(Object.keys(GAMES_PARSERS));
