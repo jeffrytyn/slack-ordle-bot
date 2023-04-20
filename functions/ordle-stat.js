@@ -2,7 +2,7 @@ import {db} from "../firebase.js"
 import { collection, doc, getDocFromServer, getCountFromServer } from "firebase/firestore";
 import slack_verify from "../slack_verify.js";
 import qs from "qs";
-import {supported_games} from "../game_parsers.js";
+import {SUPPORTED_GAMES} from "../game_parsers.js";
 
 
 
@@ -14,7 +14,7 @@ export async function handler({body, headers}, context){
   const body_obj = qs.parse(body) || {};
   const user_id = body_obj.user_id;
   const game = body_obj.text?.toLowerCase().trim() || "";
-  if(!supported_games.has(game)){
+  if(!SUPPORTED_GAMES.has(game)){
     return {
       statusCode: 200,
       headers: {"Content-Type": "application/json"},

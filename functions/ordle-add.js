@@ -2,10 +2,10 @@ import {db} from "../firebase.js"
 import {setDoc, doc, increment, getDoc } from "firebase/firestore";
 import fetch from 'node-fetch'
 import slack_verify from "../slack_verify.js";
-import {game_parsers} from "../game_parsers.js";
+import {GAMES_PARSERS} from "../game_parsers.js";
 
 const parse_text = (text) => {
-  for(const [game, parser] of Object.entries(game_parsers)){
+  for(const [game, parser] of Object.entries(GAMES_PARSERS)){
     let [day, score] = parser(text);
     if(score !== -1) return [game, day, score];
   }

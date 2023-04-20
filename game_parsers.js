@@ -4,7 +4,7 @@ const MAX_DUMBLE_SCORE = 7;
 const MAX_QUORDLE_SCORE = 10;
 const MAX_COUNTRYLE_SCORE = 196;
 
-const get_wordle_score = (lowercase_txt) => {
+export const get_wordle_score = (lowercase_txt) => {
   const reg = /^wordle (\d+) ([x1-6])\/6\n/
   const matches = lowercase_txt.match(reg);
   if(!matches) return ["", -1];
@@ -13,7 +13,7 @@ const get_wordle_score = (lowercase_txt) => {
   return [day, score_text === 'x' ? 0 : MAX_WORDLE_SCORE - parseInt(score_text)];
 }
 
-const get_quordle_score = (lowercase_txt) => {
+export const get_quordle_score = (lowercase_txt) => {
   const reg = /^daily quordle (\d+)\n((?:\s*[:_a-z]+\n){2})/
   const matches = lowercase_txt.match(reg);
   if(!matches) return ["", -1];
@@ -37,7 +37,7 @@ const get_quordle_score = (lowercase_txt) => {
   return [day, 4*MAX_QUORDLE_SCORE - total_score]
 }
 
-const get_worldle_score = (lowercase_txt) => {
+export const get_worldle_score = (lowercase_txt) => {
   const reg = /^(?:<#C.*?\|worldle>|#worldle) #(\d+) ([x1-6])\/6 \((?:100%|[1-9]\d?%|0%)\)/
   const matches = lowercase_txt.match(reg);
   if(!matches) return ["", -1];
@@ -46,7 +46,7 @@ const get_worldle_score = (lowercase_txt) => {
   return [day, score_text === 'x' ? 0 : MAX_WORLDLE_SCORE - parseInt(score_text)];
 }
 
-const get_countryle_score = (lowercase_txt) => {
+export const get_countryle_score = (lowercase_txt) => {
   const reg = /^(?:<#C.*?\|countryle>|#countryle) (\d+)\s+guessed in (\d+) tries./
   const matches = lowercase_txt.match(reg);
   if(!matches) return ["", -1];
@@ -55,7 +55,7 @@ const get_countryle_score = (lowercase_txt) => {
   return [day, score_text === 'x' ? 0 : MAX_COUNTRYLE_SCORE - parseInt(score_text)];
 }
 
-const get_dumble_score = (lowercase_txt) => {
+export const get_dumble_score = (lowercase_txt) => {
   const reg = /^dumble (\d+) ([x1-6])\/6\n/
   const matches = lowercase_txt.match(reg);
   if(!matches) return ["", -1];
@@ -64,13 +64,11 @@ const get_dumble_score = (lowercase_txt) => {
   return [day, score_text === 'x' ? 0 : MAX_DUMBLE_SCORE - parseInt(score_text)];
 }
 
-const supported_games = new Set(["wordle", "worldle", "quordle", "countryle", "dumble"])
-const game_parsers = {
+export const GAMES_PARSERS = {
   "wordle": get_wordle_score,
   "worldle": get_worldle_score,
   "quordle": get_quordle_score,
   "countryle": get_countryle_score,
   "dumble": get_dumble_score
 }
-
-export {supported_games, game_parsers};
+export const SUPPORTED_GAMES = Object.keys(GAMES_PARSERS);
