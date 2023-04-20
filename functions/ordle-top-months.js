@@ -31,7 +31,7 @@ export async function handler({body, headers}, context){
       const data = doc.data();
       leaders.push(`${month} ${data.year}: <@${data.max_user}> with ${data.max_sore} points`)
     }else{
-      leaders.push(`${month} ${i > curr_month_ind ? get_year_UTC() - 1 : get_year_UTC()}: N/A`)
+      leaders.push(`${month} ${i > curr_month_ind ? get_year_UTC() - 1 : get_year_UTC()}: _N/A_`)
     }
   }
   return {
