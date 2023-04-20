@@ -65,6 +65,12 @@ export const get_dumble_score = (lowercase_txt) => {
 }
 
 const BASE_DATE = new Date("2023-04-20");
+export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+export const get_year_UTC = () => {
+  return new Date().getUTCFullYear();
+}
+
 export const GAME_INFO = {
   "wordle": {
     "parser": get_wordle_score,
@@ -93,7 +99,6 @@ const get_game_day = (date, game_name) => {
 }
 export const is_valid_day = (game_name, submitted_day) => {
   const valid_day = get_game_day(Date.now(), game_name);
-  console.log(valid_day, submitted_day);
   return {valid_day, res: Math.abs(valid_day - submitted_day) <= 1};
 }
 
