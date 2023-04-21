@@ -1,5 +1,5 @@
 import {db} from "../firebase.js"
-import { writeBatch, collection, getDocs, where } from "firebase/firestore"; 
+import { writeBatch, collection, getDocs, where, query } from "firebase/firestore"; 
 import { SUPPORTED_GAMES, get_year_UTC, MONTHS } from "../game_parsers.js";
 import { schedule } from "@netlify/functions";
 
@@ -14,7 +14,7 @@ async function reset_score(){
   console.log("resetting scores for", past_month, year);
   for(const game of SUPPORTED_GAMES){
     const batch = writeBatch(db);
-    const snap = await getDocs(collection(db, game), where("total", ">", 0));
+    const snap = await getDocs(query(collection(db, game), where("total", ">", 0)));
     let [max_score, max_users] = [0, []];
     for(const doc of snap.docs){
       const total = doc.data().total;

@@ -16,26 +16,40 @@ export async function handler({body, headers}, context){
   if(!user_id){
     return {statusCode: 400, body: "Bad Request"}
   }
-  const stats = [];
+  const stats = {};
+  const promises = [];
   for(const game of SUPPORTED_GAMES){
     const game_title = game.charAt(0).toUpperCase() + game.slice(1);
-    const promises = [getDocs(collection(db, game, user_id, "scores")), getDoc(doc(db, game, user_id))];
-    const settled = await Promise.allSettled(promises);
-    let days = 0;
-    let total = 0;
-    let month_total = -1;
-    if(settled[0].status === "fulfilled"){
-      days = settled[0].value.docs.length;
-      total = settled[0].value.docs.reduce((acc, doc) => acc + doc.data().score, 0);
+    promises.push(getDocs(collection(db, game, user_id, "scores"))
+      .then(snap => {
+        const days = snap.docs.length;
+        const total = snap.docs.reduce((acc, doc) => acc + doc.data().score, 0);
+        stats[game_title].days = days;
+        stats[game_title].total = total;
+      })
+    );
+    promises.push(getDoc(doc(db, game, user_id)).then(snap => {
+      stats[game_title].month_total = snap.exists() ? snap.data().total : 0;
     }
-    if(settled[1].status === "fulfilled" && settled[1].value.exists()){
-      month_total = settled[1].value.data().total;
-    }
-    stats.push(`*${game_title} stats:*\n\
-    Lifetime days played: ${days}\n\
-    Lifetime average score: ${days === 0 ? 'N/A': (total/days).toFixed(2)}\n\
-    Total score this month: ${month_total === -1 ? 'N/A' : month_total}`);
+    ));
+    // const promises = [getDocs(collection(db, game, user_id, "scores")), getDoc(doc(db, game, user_id))];
+    // const settled = await Promise.allSettled(promises);
+    // let days = 0;
+    // let total = 0;
+    // let month_total = 0;
+    // if(settled[0].status === "fulfilled"){
+    //   days = settled[0].value.docs.length;
+    //   total = settled[0].value.docs.reduce((acc, doc) => acc + doc.data().score, 0);
+    // }
+    // if(settled[1].status === "fulfilled" && settled[1].value.exists()){
+    //   month_total = settled[1].value.data().total;
+    // }
+    // stats.push(`*${game_title} stats:*\n\
+    // Lifetime days played: ${days}\n\
+    // Lifetime average score: ${days === 0 ? 'N/A': (total/days).toFixed(2)}\n\
+    // Total score this month: ${month_total}`);
   }
+  const settled = await Promise.allSettled(promises);
   return {
     statusCode: 200,
     headers: {"Content-Type": "application/json"},
@@ -46,38 +60,12 @@ export async function handler({body, headers}, context){
           type: "section",
           text: {
             type: "mrkdwn",
-            text: stats.join("\n")
+            text: Object.entries(stats).map(([game, stats]) => `*${game} stats:*\n\
+            Lifetime days played: ${stats.days}\n\
+            Lifetime average score: ${stats.days === 0 ? 'N/A': (stats.total/stats.days).toFixed(2)}\n\
+            Total score this month: ${stats.month_total}`).join("\n")
           }
         }
       ]
     })}
   }
-//   const snap = await getDocFromServer(doc(db, game, user_id))
-//   if(snap.exists()){
-//     const score = snap.data().total;
-//     const days = await getCountFromServer(collection(db, game, user_id, "scores"));
-//     return {
-//       statusCode: 200,
-//       headers: {"Content-Type": "application/json"},
-//       body: JSON.stringify({
-//         response_type: "ephemeral",
-//         blocks: [
-//           {
-//             type: "section",
-//             text: {
-//               type: "mrkdwn",
-//               text: `*${game.charAt(0).toUpperCase() + game.slice(1)} Stats*\nTotal score: ${score}\nDays played: ${days.data().count}`
-//             }
-//           }
-//         ]
-//       })}
-//   }else{
-//     return {
-//       statusCode: 200,
-//       headers: {"Content-Type": "application/json"},
-//       body: JSON.stringify({
-//         response_type: "ephemeral",
-//         text: `No score for ${game.charAt(0).toUpperCase() + game.slice(1)} found.`
-//       })}
-//   }
-// };
