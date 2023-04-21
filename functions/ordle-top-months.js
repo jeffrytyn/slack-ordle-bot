@@ -36,7 +36,7 @@ export async function handler({body, headers}, context){
     const adj_ind = adj_month_ind(MONTHS.indexOf(doc.id), curr_month_ind);
     month_to_text[adj_ind] = `${doc.id} ${data.year}: ${data.max_users} with ${data.max_score} points`;
   }
-  for(let i = 0; i < 12; i++){
+  for(let i = 0; i < month_to_text.length; i++){
     const adj_ind = adj_month_ind(i, curr_month_ind);
     if(!month_to_text[adj_ind]){
       month_to_text[adj_ind] = `${MONTHS[i]} ${i > curr_month_ind ? get_year_UTC() - 1 : get_year_UTC()}: N/A`;
