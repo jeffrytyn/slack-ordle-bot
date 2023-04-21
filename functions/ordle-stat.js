@@ -28,7 +28,7 @@ export async function handler({body, headers}, context){
       days = settled[0].value.docs.length;
       total = settled[0].value.docs.reduce((acc, doc) => acc + doc.data().score, 0);
     }
-    if(settled[1].status === "fulfilled"){
+    if(settled[1].status === "fulfilled" && settled[1].value.exists()){
       month_total = settled[1].value.data().total;
     }
     stats.push(`*${game_title} stats:*\n
