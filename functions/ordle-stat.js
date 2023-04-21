@@ -21,8 +21,8 @@ export async function handler({body, headers}, context){
     const game_title = game.charAt(0).toUpperCase() + game.slice(1);
     const promises = [getDocs(collection(db, game, user_id, "scores")), getDoc(doc(db, game, user_id))];
     const settled = await Promise.allSettled(promises);
-    let days = -1;
-    let total = -1;
+    let days = 0;
+    let total = 0;
     let month_total = -1;
     if(settled[0].status === "fulfilled"){
       days = settled[0].value.docs.length;
@@ -31,10 +31,10 @@ export async function handler({body, headers}, context){
     if(settled[1].status === "fulfilled" && settled[1].value.exists()){
       month_total = settled[1].value.data().total;
     }
-    stats.push(`*${game_title} stats:*\n
-      Lifetime days played: ${days === -1 ? 'Error' : days}\n
-      Lifetime average score: ${days === -1 ? 'Error': (total/days).toFixed(2)}\n
-      Total score this month: ${month_total === -1 ? 'Error' : month_total}`);
+    stats.push(`*${game_title} stats:*\n\
+    Lifetime days played: ${days}\n\
+    Lifetime average score: ${days === 0 ? 'N/A': (total/days).toFixed(2)}\n\
+    Total score this month: ${month_total === -1 ? 'N/A' : month_total}`);
   }
   return {
     statusCode: 200,
