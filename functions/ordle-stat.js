@@ -56,12 +56,17 @@ export async function handler({body, headers}, context){
   const settled = await Promise.allSettled(promises);
   settled.forEach(promise => {
     if(promise.status === "fulfilled"){
-      const {game_title, days, total, month_total} = promise.value;
+      const {game_title, days=0, total=0, month_total=0} = promise.value;
       if(days) stats[game_title].days = days;
       if(total) stats[game_title].total = total;
       if(month_total) stats[game_title].month_total = month_total;
     }
   });
+  const text = Object.entries(stats).map(([game, stats]) => `*${game} stats:*\n\
+  Lifetime days played: ${stats.days}\n\
+  Lifetime average score: ${stats.days === 0 ? 'N/A': (stats.total/stats.days).toFixed(2)}\n\
+  Total score this month: ${stats.month_total}`).join("\n");
+
   return {
     statusCode: 200,
     headers: {"Content-Type": "application/json"},
@@ -72,10 +77,7 @@ export async function handler({body, headers}, context){
           type: "section",
           text: {
             type: "mrkdwn",
-            text: Object.entries(stats).map(([game, stats]) => `*${game} stats:*\n\
-            Lifetime days played: ${stats.days}\n\
-            Lifetime average score: ${stats.days === 0 ? 'N/A': (stats.total/stats.days).toFixed(2)}\n\
-            Total score this month: ${stats.month_total}`).join("\n")
+            text
           }
         }
       ]
