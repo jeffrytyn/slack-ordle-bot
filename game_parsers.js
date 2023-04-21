@@ -74,28 +74,29 @@ const BASE_DATE = new Date("2023-04-20");
 export const GAME_INFO = {
   "wordle": {
     "parser": get_wordle_score,
-    "day_number": 670,
+    "base_day": [new Date("2023-04-20"), 670],
   },
   "worldle": {
     "parser": get_worldle_score,
-    "day_number": 454,
+    "base_day": [new Date("2023-04-20"), 454],
   },
   "quordle": {
     "parser": get_quordle_score,
-    "day_number": 451,
+    "base_day": [new Date("2023-04-20"), 451],
   },
   "countryle": {
     "parser": get_countryle_score,
-    "day_number": 425,
+    "base_day": [new Date("2023-04-20"), 425],
   },
   "dumble": {
     "parser": get_dumble_score,
-    "day_number": 474,
+    "base_day": [new Date("2023-04-20"), 474],
   }
 }
 
 const get_game_day = (date, game_name) => {
-  return Math.floor((date-BASE_DATE)/1000/60/60/24) + GAME_INFO[game_name].day_number;
+  const [base_date, base_number] = GAME_INFO[game_name].base_day;
+  return Math.floor((date-base_date)/1000/60/60/24) + base_number;
 }
 export const is_valid_day = (game_name, submitted_day) => {
   const valid_day = get_game_day(Date.now(), game_name);
