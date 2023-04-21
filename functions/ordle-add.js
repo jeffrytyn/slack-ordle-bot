@@ -1,5 +1,5 @@
 import {db} from "../firebase.js"
-import {setDoc, doc, increment, getDoc } from "firebase/firestore";
+import {setDoc, doc, increment, getDoc, runTransaction } from "firebase/firestore";
 import fetch from 'node-fetch'
 import slack_verify from "../slack_verify.js";
 import {GAME_INFO, is_valid_day} from "../game_parsers.js";
@@ -13,21 +13,22 @@ const parse_text = (text) => {
 }
 
 async function add_score(game, day, score, user_id){
-  const date_ref = doc(db, game, user_id, "scores", day);
-  const date_doc = await getDoc(date_ref);
-  if(date_doc.exists()){
+  const exists = await runTransaction(db, async (t) => {
+    const date_ref = doc(db, game, user_id, "scores", day);
+    const user_ref = doc(db, game, user_id);
+    const date_doc = await t.get(date_ref);
+    if(date_doc.exists()){
+      return true;
+    }
+    t.set(date_ref, {
+      score: score
+    });
+    t.update(user_ref, {
+      total: increment(score)
+    }, {merge: true});
     return false;
-  }else{
-    await Promise.all([
-      setDoc(doc(db, game, user_id), {
-        total: increment(score)
-      }, {merge: true}),
-      setDoc(date_ref, {
-        score: score
-      })
-    ]);
-    return true;
-  }
+  });
+  return !exists;
 }
 
 async function event_handler(body, headers){
