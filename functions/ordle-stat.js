@@ -24,12 +24,15 @@ export async function handler({body, headers}, context){
       .then(snap => {
         const days = snap.docs.length;
         const total = snap.docs.reduce((acc, doc) => acc + doc.data().score, 0);
-        stats[game_title].days = days;
-        stats[game_title].total = total;
+        return {
+          game_title,
+          days,
+          total
+        }
       })
     );
     promises.push(getDoc(doc(db, game, user_id)).then(snap => {
-      stats[game_title].month_total = snap.exists() ? snap.data().total : 0;
+      return {game_title, month_total: snap.exists() ? snap.data().total : 0};
     }
     ));
     // const promises = [getDocs(collection(db, game, user_id, "scores")), getDoc(doc(db, game, user_id))];
@@ -50,6 +53,14 @@ export async function handler({body, headers}, context){
     // Total score this month: ${month_total}`);
   }
   const settled = await Promise.allSettled(promises);
+  settled.forEach(promise => {
+    if(promise.status === "fulfilled"){
+      const {game_title, days, total, month_total} = promise.value;
+      if(days) stats[game_title].days = days;
+      if(total) stats[game_title].total = total;
+      if(month_total) stats[game_title].month_total = month_total;
+    }
+  });
   return {
     statusCode: 200,
     headers: {"Content-Type": "application/json"},
