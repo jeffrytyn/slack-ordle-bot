@@ -5,6 +5,8 @@ import qs from "qs";
 import {SUPPORTED_GAMES, get_year_UTC, MONTHS} from "../game_parsers.js";
 
 const adj_month_ind = (month_ind, start_ind) => {
+  if(month_ind < 0 || month_ind > 11) throw new Error("Invalid month index");
+  if(start_ind < 0 || start_ind > 11) throw new Error("Invalid start index");
   return (12 + start_ind - month_ind) % 12;
 }
 
@@ -29,12 +31,9 @@ export async function handler({body, headers}, context){
   const curr_month_ind = new Date().getUTCMonth();
   const month_to_text = new Array(12);
   month_to_text.fill(null);
-  console.log(snap.docs.length)
   for(const doc of snap.docs){
     const data = doc.data();
-    const month_ind = MONTHS.indexOf(doc.id);
-    if(month_ind === -1) continue;
-    const adj_ind = adj_month_ind(month_ind, curr_month_ind);
+    const adj_ind = adj_month_ind(MONTHS.indexOf(doc.id), curr_month_ind);
     month_to_text[adj_ind] = `${doc.id} ${data.year}: ${data.max_users} with ${data.max_score} points`;
   }
   for(let i = 0; i < 12; i++){
