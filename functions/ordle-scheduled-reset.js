@@ -9,6 +9,8 @@ export const get_past_month_UTC  = () => {
 }
 
 async function reset_score(){
+  const past_month = get_past_month_UTC();
+  const year = past_month === MONTHS[MONTHS.length-1] ? get_year_UTC() - 1 : get_year_UTC();
   for(const game of SUPPORTED_GAMES){
     const batch = writeBatch(db);
     const snap = await getDocs(collection(db, game), where("total", ">", 0));
@@ -22,10 +24,9 @@ async function reset_score(){
       }
       batch.update(doc.ref, {total: 0});
     }
-    const past_month = get_past_month_UTC();
-    const year = past_month === MONTHS[MONTHS.length-1] ? get_year_UTC() - 1 : get_year_UTC();
     if(max_users.length > 0) batch.set(doc(db, game, past_month), {max_score, max_users: max_users.join(", "), year});
     await batch.commit();
+    console.log(`reset ${game} scores`);
   }
   return {
     statusCode: 200,
