@@ -29,7 +29,7 @@ export async function handler({body, headers}, context){
   const curr_month_ind = new Date().getUTCMonth();
   const month_to_text = new Array(12);
   month_to_text.fill(null);
-  console.log(snap.docs)
+  console.log(snap.docs.length)
   for(const doc of snap.docs){
     const data = doc.data();
     const month_ind = MONTHS.indexOf(doc.id);
@@ -37,7 +37,6 @@ export async function handler({body, headers}, context){
     const adj_ind = adj_month_ind(month_ind, curr_month_ind);
     month_to_text[adj_ind] = `${doc.id} ${data.year}: ${data.max_users} with ${data.max_score} points`;
   }
-  console.log(month_to_text)
   for(let i = 0; i < 12; i++){
     const adj_ind = adj_month_ind(i, curr_month_ind);
     if(!month_to_text[adj_ind]){

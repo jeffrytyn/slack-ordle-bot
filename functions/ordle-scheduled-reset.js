@@ -1,6 +1,6 @@
 import {db} from "../firebase.js"
 import { writeBatch, collection, getDocs, where } from "firebase/firestore"; 
-import { SUPPORTED_GAMES, get_year_UTC } from "../game_parsers.js";
+import { SUPPORTED_GAMES, get_year_UTC, MONTHS } from "../game_parsers.js";
 import { schedule } from "@netlify/functions";
 
 export const get_past_month_UTC  = () => {
@@ -23,7 +23,7 @@ async function reset_score(){
       batch.update(doc.ref, {total: 0});
     }
     const past_month = get_past_month_UTC();
-    const year = past_month === MONTHS[11] ? get_year_UTC() - 1 : get_year_UTC();
+    const year = past_month === MONTHS[MONTHS.length-1] ? get_year_UTC() - 1 : get_year_UTC();
     if(max_users.length > 0) batch.set(doc(db, game, past_month), {max_score, max_users: max_users.join(", "), year});
     await batch.commit();
   }
