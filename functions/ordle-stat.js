@@ -4,8 +4,6 @@ import slack_verify from "../slack_verify.js";
 import qs from "qs";
 import {SUPPORTED_GAMES} from "../game_parsers.js";
 
-
-
 export async function handler({body, headers}, context){
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
     console.log("not slack request");
@@ -32,10 +30,7 @@ export async function handler({body, headers}, context){
         }
       })
     );
-    promises.push(getDoc(doc(db, game, user_id)).then(snap => {
-      return {game_title, month_total: snap.exists() ? snap.data().total : 0};
-    }
-    ));
+    promises.push(getDoc(doc(db, game, user_id)).then(snap => ({game_title, month_total: snap.exists() ? snap.data().total : 0})));
   }
   const settled = await Promise.allSettled(promises);
   settled.forEach(promise => {

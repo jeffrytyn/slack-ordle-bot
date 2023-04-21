@@ -1,5 +1,5 @@
 import {db} from "../firebase.js"
-import {setDoc, doc, increment, getDoc, runTransaction } from "firebase/firestore";
+import {doc, increment, runTransaction } from "firebase/firestore";
 import fetch from 'node-fetch'
 import slack_verify from "../slack_verify.js";
 import {GAME_INFO, is_valid_day} from "../game_parsers.js";

@@ -64,13 +64,13 @@ export const get_dumble_score = (lowercase_txt) => {
   return [day, score_text === 'x' ? 0 : MAX_DUMBLE_SCORE - parseInt(score_text)];
 }
 
-const BASE_DATE = new Date("2023-04-20");
 export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 export const get_year_UTC = () => {
   return new Date().getUTCFullYear();
 }
 
+const BASE_DATE = new Date("2023-04-20");
 export const GAME_INFO = {
   "wordle": {
     "parser": get_wordle_score,
