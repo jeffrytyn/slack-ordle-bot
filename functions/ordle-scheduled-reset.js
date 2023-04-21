@@ -20,7 +20,7 @@ async function reset_score(){
       const total = doc.data().total;
       if(total > max_score){
         max_score = total;
-        max_users.push(`<@${doc.id}>`);
+        max_users = [`<@${doc.id}>`];
       }else if(total === max_score){
         max_users.push(`<@${doc.id}>`);
       }

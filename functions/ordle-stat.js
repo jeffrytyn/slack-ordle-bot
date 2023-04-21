@@ -50,7 +50,7 @@ export async function handler({body, headers}, context){
   });
   const text = Object.entries(stats).map(([game, stats]) => `*${game} stats:*\n\
     Lifetime days played: ${stats.days}\n\
-    Lifetime average score: ${stats.days === 0 ? '_N/A_': (stats.total/stats.days).toFixed(2)}\n\
+    Lifetime average score: ${stats.days === 0 ? 'N/A': (stats.total/stats.days).toFixed(2)}\n\
     Total score this month: ${stats.month_total}`).join("\n");
 
   return {
