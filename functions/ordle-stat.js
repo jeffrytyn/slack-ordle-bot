@@ -35,7 +35,6 @@ export async function handler({body, headers}, context){
       Lifetime days played: ${days === -1 ? 'Error' : days}\n
       Lifetime average score: ${days === -1 ? 'Error': (total/days).toFixed(2)}\n
       Total score this month: ${month_total === -1 ? 'Error' : month_total}`);
-
   }
   return {
     statusCode: 200,

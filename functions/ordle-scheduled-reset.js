@@ -11,15 +11,17 @@ export const get_past_month_UTC  = () => {
 async function reset_score(){
   const past_month = get_past_month_UTC();
   const year = past_month === MONTHS[MONTHS.length-1] ? get_year_UTC() - 1 : get_year_UTC();
+  console.log("resetting scores for", past_month, year);
   for(const game of SUPPORTED_GAMES){
     const batch = writeBatch(db);
     const snap = await getDocs(collection(db, game), where("total", ">", 0));
     let [max_score, max_users] = [0, []];
     for(const doc of snap.docs){
-      if(doc.data().total > max_score){
-        max_score = doc.data().total;
+      const total = doc.data().total;
+      if(total > max_score){
+        max_score = total;
         max_users.push(`<@${doc.id}>`);
-      }else if(doc.data().total === max_score){
+      }else if(total === max_score){
         max_users.push(`<@${doc.id}>`);
       }
       batch.update(doc.ref, {total: 0});
