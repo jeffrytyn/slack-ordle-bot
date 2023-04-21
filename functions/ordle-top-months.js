@@ -4,6 +4,9 @@ import slack_verify from "../slack_verify.js";
 import qs from "qs";
 import {SUPPORTED_GAMES, get_year_UTC, MONTHS} from "../game_parsers.js";
 
+const adj_month_ind = (month_ind, start_ind) => {
+  return (12 + start_ind - month_ind) % 12;
+}
 
 export async function handler({body, headers}, context){
   if(!slack_verify(headers["x-slack-request-timestamp"], body, headers["x-slack-signature"])){
@@ -28,12 +31,14 @@ export async function handler({body, headers}, context){
   month_to_text.fill(null);
   for(const doc of snap.docs){
     const data = doc.data();
-    month_to_text[MONTHS.indexOf(doc.id)] = `${doc.id} ${data.year}: <@${data.max_users}> with ${data.max_score} points`;
+    const adj_ind = adj_month_ind(MONTHS.indexOf(doc.id), curr_month_ind);
+    month_to_text[adj_ind] = `${doc.id} ${data.year}: ${data.max_users} with ${data.max_score} points`;
   }
-  for(let i = 1; i < 12; i++){
-    const month_ind = (curr_month_ind - i + 12) % 12;
-    if(!month_to_text[month_ind]){
-      month_to_text[month_ind] = `${MONTHS[month_ind]} ${i > curr_month_ind ? get_year_UTC() - 1 : get_year_UTC()}: _N/A_`;
+  console.log(month_to_text)
+  for(let i = 0; i < 12; i++){
+    const adj_ind = adj_month_ind(i, curr_month_ind);
+    if(!month_to_text[adj_ind]){
+      month_to_text[adj_ind] = `${MONTHS[i]} ${i > curr_month_ind ? get_year_UTC() - 1 : get_year_UTC()}: _N/A_`;
     }
   }
 
