@@ -1,5 +1,5 @@
 import {db} from "../firebase.js"
-import {getDocs, doc, where} from "firebase/firestore";
+import {getDocs, collection, where} from "firebase/firestore";
 import slack_verify from "../slack_verify.js";
 import qs from "qs";
 import {SUPPORTED_GAMES, get_year_UTC, MONTHS} from "../game_parsers.js";
@@ -41,22 +41,6 @@ export async function handler({body, headers}, context){
       month_to_text[adj_ind] = `${MONTHS[i]} ${i > curr_month_ind ? get_year_UTC() - 1 : get_year_UTC()}: _N/A_`;
     }
   }
-
-  // const leaders = [];
-  // await Promise.allSettled(promises).then((results) => {
-  //   results.forEach((result, i) => {
-  //     const month = MONTHS[(curr_month_ind - i + 11) % 12];
-  //     if(result.status === "fulfilled"){
-  //       const snap = result.value;
-  //       if(snap.exists()){
-  //         const data = snap.data();
-  //         leaders.push(`${month} ${data.year}: <@${data.max_user}> with ${data.max_sore} points`)
-  //       }else{
-  //         leaders.push(`${month} ${i > curr_month_ind ? get_year_UTC() - 1 : get_year_UTC()}: _N/A_`)
-  //       }
-  //     }
-  //   })
-  // })
   return {
     statusCode: 200,
     headers: {"Content-Type": "application/json"},
