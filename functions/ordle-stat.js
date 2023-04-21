@@ -40,11 +40,10 @@ export async function handler({body, headers}, context){
   const settled = await Promise.allSettled(promises);
   settled.forEach(promise => {
     if(promise.status === "fulfilled"){
-      const {game_title, days=0, total=0, month_total=0} = promise.value;
-      console.log(promise.value," then ", days, total, month_total)
-      stats[game_title].days = days;
-      stats[game_title].total = total;
-      stats[game_title].month_total = month_total;
+      const {game_title, days=undefined, total=undefined, month_total=undefined} = promise.value;
+      if(days != undefined) stats[game_title].days = days;
+      if(total != undefined) stats[game_title].total = total;
+      if(month_total != undefined) stats[game_title].month_total = month_total;
     }else{
       console.log(promise.reason);
     }
