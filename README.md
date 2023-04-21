@@ -8,9 +8,9 @@ Supported games are
 - Dumble
 
 ## Setup
-1. Create a new Slack app
+1. Create a [new Slack app](https://api.slack.com/authentication/basics)
 2. Create a bot user in **OAuth and Permissions** and enable `chat:write`, `commands` scopes.
-3. Create 2 slash commands corresponding to the `ordle-stat` and `ordle-top` functions.
+3. Create the slash commands mentioned in the [Slash commands](#slash-commands) section.
 4. Host the functions with [Netlify Functions](https://www.netlify.com/products/functions/).
 5. Connect the slash commands to the hosted functions.
 6. Enable **Event Subscriptions** and set the Request URL to the url for the `ordle-add` function.
