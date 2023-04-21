@@ -70,7 +70,6 @@ export const get_year_UTC = () => {
   return new Date().getUTCFullYear();
 }
 
-const BASE_DATE = new Date("2023-04-20");
 export const GAME_INFO = {
   "wordle": {
     "parser": get_wordle_score,
