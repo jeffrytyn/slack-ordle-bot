@@ -23,6 +23,9 @@ export async function handler({body, headers}, context){
         text: (game.length === 0) ? "Please enter a game name." : `Sorry, '${game}' is not supported. See OrdleBot info for valid games.`
       })}
   }
+  // for(const game of SUPPORTED_GAMES){
+  //   const snap = await getDocs(collection(db, game, user_id, "scores"));
+  // }
   const snap = await getDocFromServer(doc(db, game, user_id))
   if(snap.exists()){
     const score = snap.data().total;

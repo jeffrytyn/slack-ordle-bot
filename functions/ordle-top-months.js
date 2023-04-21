@@ -1,5 +1,5 @@
 import {db} from "../firebase.js"
-import {getDocs, collection, where} from "firebase/firestore";
+import {getDocs, collection, where, query} from "firebase/firestore";
 import slack_verify from "../slack_verify.js";
 import qs from "qs";
 import {SUPPORTED_GAMES, get_year_UTC, MONTHS} from "../game_parsers.js";
@@ -25,7 +25,7 @@ export async function handler({body, headers}, context){
         text: (game.length === 0) ? "Please enter a game name." : `Sorry, '${game}' is not supported. See OrdleBot info for valid games.`
       })}
   }
-  const snap = await getDocs(collection(db, game), where("__name__", "in" , MONTHS));
+  const snap = await getDocs(query(collection(db, game), where("max_users", "!=" , "")));
   const curr_month_ind = new Date().getUTCMonth();
   const month_to_text = new Array(12);
   month_to_text.fill(null);
