@@ -25,7 +25,7 @@ export async function handler({body, headers}, context){
         text: (game.length === 0) ? "Please enter a game name." : `Sorry, '${game}' is not supported. See OrdleBot info for valid games.`
       })}
   }
-  const snap = await getDocs(doc(db, game), where("max_users", "!=", ""));
+  const snap = await getDocs(collection(db, game), where("max_users", "!=", ""));
   const curr_month_ind = new Date().getUTCMonth();
   const month_to_text = new Array(12);
   month_to_text.fill(null);
