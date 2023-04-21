@@ -41,6 +41,7 @@ export async function handler({body, headers}, context){
   settled.forEach(promise => {
     if(promise.status === "fulfilled"){
       const {game_title, days=0, total=0, month_total=0} = promise.value;
+      console.log(promise.value," then ", days, total, month_total)
       stats[game_title].days = days;
       stats[game_title].total = total;
       stats[game_title].month_total = month_total;
