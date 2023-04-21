@@ -20,6 +20,7 @@ export async function handler({body, headers}, context){
   const promises = [];
   for(const game of SUPPORTED_GAMES){
     const game_title = game.charAt(0).toUpperCase() + game.slice(1);
+    stats[game_title] = {};
     promises.push(getDocs(collection(db, game, user_id, "scores"))
       .then(snap => {
         const days = snap.docs.length;
