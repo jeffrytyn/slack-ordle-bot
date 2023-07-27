@@ -16,7 +16,7 @@ Supported games are
 6. Enable **Event Subscriptions** and set the Request URL to the url for the `ordle-add` function.
 7. Subscribe the bot to `message.channels`, `message.im`.
 9. Create a [Firestore](https://firebase.google.com/docs/firestore) database, create a new web app, and set each attribute of the [config object](https://firebase.google.com/docs/web/learn-more#config-object) as an environment variable.
-10. Add your Slack app signing secret as an environment variable.
+10. Add your Slack app signing secret as an environment variable on Netlify.
 
 ## Point Calculations
 Wordle: 7 - number of guesses<br>
