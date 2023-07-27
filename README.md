@@ -43,4 +43,4 @@ If no value for `<num>` is provided, a default value of `5` is used.
 Displays the monthly winners from the past year for `<game>`.
 
 ## Adding New Games
-To add support for new games, you'll need to make a function that parses out the sharing text into the day of the game and a score. This function can live in `game_parsers.js`. You'll also need to add/update some meta-info about the game in `GAME_INFO`.
+To add support for new games, you'll need to make a function that parses out the sharing text into the day of the game and a score. This function can live in `game_parsers.js`. You'll also need to add/update some meta-info about the game in the `GAME_INFO` object.
